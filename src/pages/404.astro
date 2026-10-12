@@ -1,0 +1,20 @@
+---
+import { u } from '../lib/url';
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Not Found">
+  <section class="container nf">
+    <p class="label">404</p>
+    <h1>ページが見つかりませんでした。</h1>
+    <p>雨に流されてしまったのかもしれません。</p>
+    <a href={u('/')} class="link-arrow">Back to home</a>
+  </section>
+</Base>
+
+<style>
+  .nf { min-height: 80svh; display: flex; flex-direction: column; justify-content: center; gap: 20px; padding-top: 120px; }
+  h1 { font-size: clamp(22px, 3vw, 30px); letter-spacing: 0.16em; font-weight: 400; }
+  p:not(.label) { color: var(--ink-soft); margin-bottom: 24px; }
+  .link-arrow { align-self: flex-start; }
+</style>

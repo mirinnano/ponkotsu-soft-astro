@@ -1,0 +1,39 @@
+---
+// data-ajax-form を持つ form を fetch で送信し、結果を [data-status] に表示する共通スクリプト
+---
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-ajax-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      button.disabled = true;
+      status.textContent = '送信中…';
+      status.dataset.state = '';
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(body.error ?? '送信に失敗しました。');
+        if (body.url) {
+          status.innerHTML = '';
+          const a = Object.assign(document.createElement('a'), {
+            href: body.url,
+            textContent: 'ダウンロードを開始 →',
+            className: 'link-arrow',
+          });
+          status.append('認証しました。', document.createElement('br'), a);
+        } else {
+          status.textContent = form.dataset.success ?? '送信しました。';
+          form.reset();
+        }
+        status.dataset.state = 'ok';
+      } catch (err) {
+        status.textContent = (err as Error).message;
+        status.dataset.state = 'error';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>

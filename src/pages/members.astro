@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { members } from '../data/members';
+---
+
+<Base title="Members" description="ぽんこつソフトのメンバー紹介。">
+  <PageHeader label="Members" title="メンバー" />
+
+  <section class="container list">
+    {
+      members.map((m) => (
+        <article class="member reveal">
+          <div class="mark" aria-hidden="true">{m.name.slice(0, 1)}</div>
+          <div>
+            <h2>{m.name}</h2>
+            <ul class="roles">
+              {m.roles.map((r) => <li class="en">{r}</li>)}
+            </ul>
+            <p class="bio">{m.bio}</p>
+            <a href={`https://twitter.com/${m.twitter}`} target="_blank" rel="noopener" class="link-arrow">
+              @{m.twitter}
+            </a>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+</Base>
+
+<style>
+  .list { padding-bottom: clamp(96px, 12vw, 160px); }
+  .member {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: clamp(32px, 6vw, 80px);
+    padding-block: 56px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .mark {
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    background: var(--paper-2);
+    font-family: var(--serif-jp);
+    font-size: 72px;
+    color: var(--mute);
+  }
+  h2 { font-size: 26px; letter-spacing: 0.2em; }
+  .roles { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px; }
+  .roles li { font-size: 14px; font-style: italic; color: var(--mute); }
+  .bio { margin-block: 28px 36px; max-width: 32em; color: var(--ink-soft); }
+  @media (max-width: 640px) {
+    .member { grid-template-columns: 1fr; }
+    .mark { width: 120px; font-size: 44px; }
+  }
+</style>

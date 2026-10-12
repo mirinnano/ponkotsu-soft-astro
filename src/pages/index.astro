@@ -1,0 +1,300 @@
+---
+import { u } from '../lib/url';
+import Base from '../layouts/Base.astro';
+import { Picture } from 'astro:assets';
+import heroImage from '../assets/hero.png';
+import Progress from '../components/Progress.astro';
+import { site } from '../data/site';
+import { news, formatDate } from '../data/news';
+import { works, totalProgress } from '../data/works';
+
+const featured = works[0];
+---
+
+<Base overHero="light">
+  <section class="hero">
+    <Picture
+      src={heroImage}
+      formats={['avif', 'webp']}
+      fallbackFormat="jpg"
+      quality={82}
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      alt="麦わら帽子の少女が、防波堤に腰掛けて海を眺めているイラスト"
+      class="hero-image"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="hero-light" aria-hidden="true"></div>
+    <div class="hero-center">
+      <div class="hero-glass">
+        <h1>
+          <img src={u('/images/logo/wordmark-ink.svg')} alt={site.name} width="520" height="140" />
+        </h1>
+        <p class="hero-sub en">Visual novel circle</p>
+      </div>
+    </div>
+    <a href="#about" class="scroll en" aria-label="下へスクロール">Scroll</a>
+  </section>
+
+  <section id="about" class="section container intro">
+    <p class="label reveal">About</p>
+    <div class="intro-body reveal">
+      <h2>ぽんこつソフトについて</h2>
+      <p>
+        ぽんこつソフトは、少しダークで切ないノベルゲームを制作する同人サークルです。現在、新作キネティックノベル『海風』を制作しています。
+      </p>
+      <a href={u('/about')} class="link-arrow">About us</a>
+    </div>
+  </section>
+
+  <section class="night featured">
+    <div class="container section featured-inner">
+      <div class="featured-title reveal">
+        <p class="label">Works</p>
+        <h2 class="work-title">{featured.title}</h2>
+        <p class="work-en en">{featured.titleEn}</p>
+      </div>
+      <div class="featured-body reveal">
+        <p class="status"><span>{featured.status}</span>{featured.genre}</p>
+        <p class="catch">{featured.catchcopy}</p>
+        <p class="synopsis">
+          {featured.synopsis[0]}
+          {featured.synopsis[1]}
+        </p>
+        <Progress label="開発進捗" value={totalProgress(featured)} />
+        <a href={u(`/works/${featured.slug}`)} class="link-arrow">View the work</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container news">
+    <div class="news-head reveal">
+      <p class="label">News</p>
+      <h2>お知らせ</h2>
+    </div>
+    <ol class="news-list">
+      {
+        news.map((n) => (
+          <li class="reveal">
+            <time datetime={n.date} class="en">{formatDate(n.date)}</time>
+            <div>
+              <h3>{n.href ? <a href={n.href}>{n.title}</a> : n.title}</h3>
+              <p>{n.body}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="follow container reveal">
+    <hr class="rail" />
+    <div class="follow-inner">
+      <p>最新情報は X でお知らせしています。</p>
+      <a href={site.twitterUrl} target="_blank" rel="noopener" class="link-arrow">@{site.twitter}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 560px;
+    overflow: hidden;
+    background: linear-gradient(#bdf0e6, #8fdcdc 60%, #2f4b4c);
+    color: #fff;
+  }
+  .hero :global(.hero-image) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 30% 50%;
+    animation: settle 6s var(--ease) both;
+  }
+  .hero :global(picture) { display: contents; }
+  @keyframes settle { from { transform: scale(1.06); } to { transform: none; } }
+
+  /* 透明感：全体を少し白く霞ませ、下端はページ色に溶かす */
+  .hero-veil {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(60% 45% at 50% 46%, rgb(255 255 255 / 0.32), transparent 70%),
+      linear-gradient(rgb(255 255 255 / 0.18), transparent 28%, transparent 68%, color-mix(in srgb, var(--paper) 70%, transparent) 92%, var(--paper));
+    mix-blend-mode: normal;
+  }
+  /* ゆっくりと横切る光 */
+  .hero-light {
+    position: absolute;
+    inset: -20% -40%;
+    background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / 0.22) 46%, rgb(255 250 230 / 0.12) 52%, transparent 60%);
+    animation: sheen 14s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes sheen {
+    0% { transform: translateX(-40%); opacity: 0; }
+    20% { opacity: 1; }
+    60%, 100% { transform: translateX(40%); opacity: 0; }
+  }
+
+  .hero-center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding-inline: var(--gutter);
+  }
+  .hero-glass {
+    padding: clamp(28px, 4vw, 48px) clamp(28px, 5vw, 72px);
+    border-radius: 2px;
+    background: linear-gradient(135deg, rgb(255 255 255 / 0.42), rgb(255 255 255 / 0.18));
+    border: 1px solid rgb(255 255 255 / 0.65);
+    box-shadow: 0 24px 70px rgb(20 90 90 / 0.14), inset 0 1px 0 rgb(255 255 255 / 0.7);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    text-align: center;
+    animation: rise 2s var(--ease) both 0.6s;
+  }
+  .hero-glass h1 img {
+    width: min(420px, 68vw);
+    height: auto;
+    margin-inline: auto;
+  }
+  .hero-sub {
+    margin-top: 14px;
+    font-size: 14px;
+    font-style: italic;
+    letter-spacing: 0.24em;
+    color: #45605f;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  .scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-bottom: 52px;
+  }
+  .scroll::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 1px;
+    height: 40px;
+    background: currentColor;
+    animation: line 2.6s var(--ease) infinite;
+  }
+  @keyframes line {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* About */
+  .intro {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 48px;
+  }
+  .intro h2 {
+    font-size: clamp(22px, 2.6vw, 28px);
+    letter-spacing: 0.16em;
+    margin-bottom: 28px;
+  }
+  .intro-body p { max-width: 34em; font-size: 16px; color: var(--ink-soft); margin-bottom: 48px; }
+
+  /* Featured */
+  .featured-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: end;
+  }
+  .work-title {
+    margin-top: 32px;
+    font-size: clamp(88px, 14vw, 180px);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+  .work-en {
+    margin-top: 24px;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--mute);
+  }
+  .status {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    font-family: var(--serif-en);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: var(--mute);
+  }
+  .status span {
+    font-family: var(--sans-jp);
+    font-size: 12px;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 2px 12px;
+    letter-spacing: 0.2em;
+  }
+  .catch { margin-top: 28px; font-family: var(--serif-jp); font-size: 19px; letter-spacing: 0.1em; }
+  .synopsis { margin-top: 20px; margin-bottom: 48px; color: var(--ink-soft); font-size: 15px; }
+  .featured-body :global(.progress) { margin-bottom: 48px; }
+
+  /* News */
+  .news { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
+  .news-head h2 { margin-top: 16px; font-size: 24px; letter-spacing: 0.2em; }
+  .news-list li {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+    padding-block: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .news-list li:last-child { border-bottom: 1px solid var(--line); }
+  .news-list time { font-size: 16px; color: var(--mute); letter-spacing: 0.1em; line-height: 1.9; }
+  .news-list h3 { font-size: 16px; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .news-list h3 a { border-bottom: 1px solid var(--line); transition: border-color 0.3s; }
+  .news-list h3 a:hover { border-color: var(--ink); }
+  .news-list p { font-size: 15px; color: var(--ink-soft); }
+
+  /* Follow */
+  .follow { padding-bottom: clamp(96px, 12vw, 160px); }
+  .follow-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding-top: 48px;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 640px) {
+    .hero :global(.hero-image) { object-position: 22% 50%; }
+  }
+  @media (max-width: 820px) {
+    .intro, .news, .featured-inner { grid-template-columns: 1fr; gap: 32px; }
+    .featured-inner { gap: 48px; }
+  }
+  @media (max-width: 560px) {
+    .news-list li { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+interface Props { label: string; value: number }
+const { label, value } = Astro.props;
+---
+
+<div class="progress">
+  <div class="row">
+    <span class="name">{label}</span>
+    <span class="value en">{value}<small>%</small></span>
+  </div>
+  <div class="track" role="progressbar" aria-label={label} aria-valuenow={value} aria-valuemin="0" aria-valuemax="100">
+    <span style={`--v:${value}%`}></span>
+  </div>
+</div>
+
+<style>
+  .row { display: flex; justify-content: space-between; align-items: baseline; }
+  .name { font-size: 14px; color: var(--ink-soft); letter-spacing: 0.08em; }
+  .value { font-size: 28px; font-weight: 300; }
+  .value small { font-size: 14px; margin-left: 2px; color: var(--mute); }
+  .track { margin-top: 10px; height: 1px; background: var(--line); }
+  .track span { display: block; height: 1px; width: var(--v); background: var(--ink); }
+</style>

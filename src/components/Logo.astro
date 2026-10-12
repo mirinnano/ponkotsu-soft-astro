@@ -1,0 +1,25 @@
+---
+import { u } from '../lib/url';
+// アウトライン化済みのロゴ SVG を <img> で表示する。auto はOSのダークモードに追従
+interface Props {
+  kind?: 'horizontal' | 'stacked' | 'mark';
+  tone?: 'auto' | 'ink' | 'light';
+  class?: string;
+  loading?: 'eager' | 'lazy';
+}
+const { kind = 'horizontal', tone = 'auto', class: className, loading = 'lazy' } = Astro.props;
+const size = { horizontal: [268, 64], stacked: [360, 272], mark: [64, 64] }[kind];
+const src = (t: 'ink' | 'light') => u(`/images/logo/${kind === 'mark' ? 'mark' : `logo-${kind}`}-${t}.svg`);
+const alt = 'ぽんこつソフト PONKOTU SOFTWARE';
+---
+
+{
+  tone === 'auto' ? (
+    <picture class={className}>
+      <source srcset={src('light')} media="(prefers-color-scheme: dark)" />
+      <img src={src('ink')} alt={alt} width={size[0]} height={size[1]} loading={loading} decoding="async" />
+    </picture>
+  ) : (
+    <img class={className} src={src(tone)} alt={alt} width={size[0]} height={size[1]} loading={loading} decoding="async" />
+  )
+}

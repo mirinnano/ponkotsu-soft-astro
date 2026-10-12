@@ -1,0 +1,209 @@
+---
+import { u } from '../../lib/url';
+import Base from '../../layouts/Base.astro';
+import Progress from '../../components/Progress.astro';
+import AjaxForm from '../../components/AjaxForm.astro';
+import { works, totalProgress, type Work } from '../../data/works';
+
+export function getStaticPaths() {
+  return works.map((work) => ({ params: { slug: work.slug }, props: { work } }));
+}
+
+const { work } = Astro.props as { work: Work };
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const enc = encodeURIComponent;
+const share = [
+  { label: 'X', href: `https://twitter.com/intent/tweet?text=${enc(work.title)}&url=${enc(pageUrl)}&hashtags=${enc('ぽんこつソフト,ノベルゲーム')}` },
+  { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${enc(pageUrl)}` },
+  { label: 'LINE', href: `https://social-plugins.line.me/lineit/share?url=${enc(pageUrl)}` },
+];
+---
+
+<Base overHero="dark" title={work.title} description={`${work.catchcopy}。${work.synopsis.slice(0, 2).join('')}`}>
+  <section class="night hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <p class="meta"><span class="status">{work.status}</span><span class="en">{work.genre}</span></p>
+        <p class="catch">{work.catchcopy}</p>
+      </div>
+      <h1 class="title">{work.title}</h1>
+      <p class="title-en en">{work.titleEn}</p>
+    </div>
+  </section>
+
+  <section class="section container block">
+    <p class="label reveal">Story</p>
+    <div class="story reveal">
+      <h2>あらすじ</h2>
+      {work.synopsis.map((p) => <p class="prose">{p}</p>)}
+    </div>
+  </section>
+
+  <section class="container block characters-section">
+    <p class="label reveal">Characters</p>
+    <div>
+      <h2 class="reveal">登場人物</h2>
+      <ul class="characters">
+        {
+          work.characters.map((c) => (
+            <li class="reveal">
+              <p class="role en">{c.role}</p>
+              <h3>{c.name}</h3>
+              <p>{c.description}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section container block">
+    <p class="label reveal">Development</p>
+    <div class="reveal">
+      <h2>開発状況</h2>
+      <div class="progress-list">
+        {work.progress.map((p) => <Progress label={p.label} value={p.value} />)}
+      </div>
+      <p class="total en">Overall — {totalProgress(work)}%</p>
+    </div>
+  </section>
+
+  {
+    work.betaOpen && (
+      <section id="download" class="download">
+        <div class="container block section">
+          <p class="label reveal">Download</p>
+          <div class="reveal">
+            <h2>クローズドベータテスト</h2>
+            <p class="note">
+              現在クローズドベータテスト中です。テスターの方は以下にアクセスコードを入力してください。
+            </p>
+            <form action={u('/api/beta')} method="post" class="beta-form" data-ajax-form>
+              <label class="visually-hidden" for="token">アクセスコード</label>
+              <div class="field">
+                <input id="token" name="token" type="text" placeholder="アクセスコード" autocomplete="off" required />
+                <button type="submit">認証する</button>
+              </div>
+              <p class="status-msg" data-status aria-live="polite" />
+            </form>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="container share">
+    <span class="label">Share</span>
+    <ul>
+      {share.map((s) => <li><a href={s.href} target="_blank" rel="noopener">{s.label}</a></li>)}
+    </ul>
+    <a href={u('/works')} class="back en">← All works</a>
+  </section>
+
+  <AjaxForm />
+</Base>
+
+<style>
+  .hero { min-height: 92svh; display: flex; }
+  .hero-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr auto;
+    padding-top: 140px;
+    padding-bottom: 72px;
+    gap: 24px 48px;
+  }
+  .title {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    writing-mode: vertical-rl;
+    font-size: clamp(96px, 16vw, 200px);
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    line-height: 1;
+    animation: fade 2.4s var(--ease) both 0.2s;
+  }
+  .title-en {
+    position: absolute;
+    left: var(--gutter);
+    top: 140px;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--mute);
+  }
+  .hero-text { grid-column: 1; grid-row: 2; align-self: end; animation: fade 2s var(--ease) both 0.9s; }
+  .meta { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--mute); }
+  .status { border: 1px solid var(--line); padding: 1px 12px; color: var(--ink); font-size: 12px; letter-spacing: 0.2em; }
+  .catch { margin-top: 20px; font-family: var(--serif-jp); font-size: clamp(16px, 1.8vw, 20px); letter-spacing: 0.14em; }
+  @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .block { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
+  h2 { font-size: 22px; letter-spacing: 0.2em; margin-bottom: 36px; }
+  .story p { max-width: 34em; }
+  .story p + p { margin-top: 1.4em; }
+
+  .characters-section { padding-bottom: clamp(48px, 6vw, 80px); }
+  .characters { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .characters li { background: var(--paper); padding: 40px 32px; }
+  .role { font-size: 13px; font-style: italic; color: var(--mute); }
+  .characters h3 { font-size: 26px; letter-spacing: 0.2em; margin-block: 6px 18px; }
+  .characters li p:last-child { font-size: 15px; color: var(--ink-soft); }
+
+  .progress-list { display: grid; gap: 28px; max-width: 520px; }
+  .total { margin-top: 20px; font-size: 13px; color: var(--mute); letter-spacing: 0.14em; }
+
+  .download { background: var(--paper-2); }
+  .note { color: var(--ink-soft); max-width: 32em; }
+  .beta-form { margin-top: 36px; max-width: 520px; }
+  .field {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    border-bottom: 1px solid var(--ink);
+  }
+  .beta-form input {
+    font: inherit;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    background: transparent;
+    border: 0;
+    color: var(--ink);
+    padding: 14px 0;
+    min-width: 0;
+  }
+  .beta-form input:focus { outline: none; }
+  .beta-form button {
+    font-family: var(--sans-jp);
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    background: none;
+    border: 0;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 14px 0 14px 24px;
+  }
+  .beta-form button:disabled { opacity: 0.4; }
+  .status-msg { margin-top: 16px; font-size: 13px; color: var(--ink-soft); }
+  .status-msg[data-state='error'] { color: #a4533f; }
+
+  .share {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding-block: 64px clamp(96px, 12vw, 140px);
+  }
+  .share ul { display: flex; gap: 24px; }
+  .share a { font-family: var(--serif-en); letter-spacing: 0.12em; color: var(--ink-soft); transition: color 0.3s; }
+  .share a:hover { color: var(--ink); }
+  .back { margin-left: auto; }
+
+  @media (max-width: 820px) {
+    .block { grid-template-columns: 1fr; gap: 24px; }
+    .characters { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .title { grid-column: 1; grid-row: 1; justify-self: end; font-size: 96px; }
+  }
+</style>
