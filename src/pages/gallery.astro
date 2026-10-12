@@ -1,0 +1,74 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { getGallery, formatDate } from '../lib/content';
+
+const items = await Promise.all((await getGallery()).map(async (e) => ({ e, Content: (await render(e)).Content })));
+---
+
+<Base title="Gallery" description="ぽんこつソフトのイラスト・スクリーンショット。">
+  <PageHeader label="Gallery" title="ギャラリー" />
+  <section class="container gallery">
+    {
+      items.length ? (
+        <ul class="grid">
+          {items.map(({ e, Content }) => (
+            <li class="reveal">
+              <button type="button" class="thumb" data-full={e.data.image.src} data-title={e.data.title}>
+                <Image src={e.data.image} alt={e.data.title} widths={[480, 960]} sizes="(max-width: 720px) 100vw, 33vw" />
+              </button>
+              <p class="caption">
+                <span>{e.data.title}</span>
+                <span class="en">{e.data.credit ?? formatDate(e.data.date)}</span>
+              </p>
+              <div class="desc" hidden><Content /></div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="empty">準備中です。</p>
+      )
+    }
+  </section>
+
+  <dialog class="lightbox" aria-label="画像の拡大表示">
+    <img alt="" />
+    <p class="lb-title"></p>
+    <form method="dialog"><button class="close en">Close</button></form>
+  </dialog>
+</Base>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('.lightbox');
+  if (dialog) {
+    const img = dialog.querySelector('img')!;
+    const title = dialog.querySelector('.lb-title')!;
+    document.querySelectorAll<HTMLButtonElement>('.thumb').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        img.src = btn.dataset.full!;
+        img.alt = btn.dataset.title!;
+        title.textContent = btn.dataset.title!;
+        dialog.showModal();
+      }),
+    );
+    dialog.addEventListener('click', (e) => e.target === dialog && dialog.close());
+  }
+</script>
+
+<style>
+  .gallery { padding-bottom: clamp(96px, 12vw, 160px); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 40px 28px; }
+  .thumb { display: block; width: 100%; padding: 0; border: 0; background: var(--paper-2); cursor: zoom-in; overflow: hidden; }
+  .thumb :global(img) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; transition: transform 1s var(--ease); }
+  .thumb:hover :global(img) { transform: scale(1.03); }
+  .caption { display: flex; justify-content: space-between; gap: 16px; margin-top: 12px; font-size: 14px; }
+  .caption .en { color: var(--mute); font-style: italic; }
+  .empty { color: var(--ink-soft); }
+  .lightbox { border: 0; padding: 0; background: transparent; max-width: min(1200px, 94vw); color: #fff; }
+  .lightbox::backdrop { background: rgb(10 25 26 / 0.86); backdrop-filter: blur(6px); }
+  .lightbox img { max-height: 82vh; width: auto; margin-inline: auto; }
+  .lb-title { margin-top: 14px; text-align: center; letter-spacing: 0.1em; }
+  .close { position: fixed; top: 20px; right: 24px; background: none; border: 0; color: #fff; font-size: 16px; letter-spacing: 0.16em; cursor: pointer; }
+</style>

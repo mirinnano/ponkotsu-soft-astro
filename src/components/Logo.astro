@@ -2,14 +2,14 @@
 import { u } from '../lib/url';
 // アウトライン化済みのロゴ SVG を <img> で表示する。auto はOSのダークモードに追従
 interface Props {
-  kind?: 'horizontal' | 'stacked' | 'mark';
+  kind?: 'horizontal' | 'stacked' | 'mark' | 'wordmark';
   tone?: 'auto' | 'ink' | 'light';
   class?: string;
   loading?: 'eager' | 'lazy';
 }
 const { kind = 'horizontal', tone = 'auto', class: className, loading = 'lazy' } = Astro.props;
-const size = { horizontal: [268, 64], stacked: [360, 272], mark: [64, 64] }[kind];
-const src = (t: 'ink' | 'light') => u(`/images/logo/${kind === 'mark' ? 'mark' : `logo-${kind}`}-${t}.svg`);
+const size = { horizontal: [268, 64], stacked: [360, 272], mark: [64, 64], wordmark: [520, 140] }[kind];
+const src = (t: 'ink' | 'light') => u(`/images/logo/${kind === 'mark' || kind === 'wordmark' ? kind : `logo-${kind}`}-${t}.svg`);
 const alt = 'ぽんこつソフト PONKOTU SOFTWARE';
 ---
 

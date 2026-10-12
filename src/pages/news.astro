@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import NewsList from '../components/NewsList.astro';
+import { getNews } from '../lib/content';
+
+const items = await getNews();
+---
+
+<Base title="News" description="ぽんこつソフトのお知らせ一覧。">
+  <PageHeader label="News" title="お知らせ" />
+  <section class="container list">
+    <NewsList items={items} />
+  </section>
+</Base>
+
+<style>
+  .list { padding-bottom: clamp(96px, 12vw, 160px); }
+</style>

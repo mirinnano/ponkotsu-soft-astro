@@ -1,0 +1,51 @@
+---
+import { render } from 'astro:content';
+import { formatDate, isoDate, newsHref, type getNews } from '../lib/content';
+
+interface Props { items: Awaited<ReturnType<typeof getNews>> }
+const { items } = Astro.props;
+const rows = await Promise.all(items.map(async (e) => ({ e, href: newsHref(e), Content: (await render(e)).Content })));
+---
+
+<ol class="news-list">
+  {
+    rows.map(({ e, href, Content }) => (
+      <li class="reveal">
+        <p class="meta">
+          <time datetime={isoDate(e.data.date)} class="en">{formatDate(e.data.date)}</time>
+          {e.data.category === 'press' && <span class="tag en">Press</span>}
+        </p>
+        <div>
+          <h3>{href ? <a href={href}>{e.data.title}</a> : e.data.title}</h3>
+          <div class="body">
+            {e.data.category === 'press' ? <p>{e.data.summary}</p> : <Content />}
+          </div>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  li {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    padding-block: 32px;
+    border-top: 1px solid var(--line);
+  }
+  li:last-child { border-bottom: 1px solid var(--line); }
+  .meta { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+  time { font-size: 16px; color: var(--mute); letter-spacing: 0.1em; line-height: 1.9; }
+  .tag { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; border: 1px solid var(--line); padding: 0 10px; color: var(--ink-soft); }
+  h3 { font-size: 16px; letter-spacing: 0.1em; margin-bottom: 8px; }
+  h3 a { border-bottom: 1px solid var(--line); transition: border-color 0.3s; }
+  h3 a:hover { border-color: var(--ink); }
+  .body { font-size: 15px; color: var(--ink-soft); }
+  .body :global(p + p) { margin-top: 0.8em; }
+  .body :global(a) { border-bottom: 1px solid var(--line); }
+  @media (max-width: 560px) {
+    li { grid-template-columns: 1fr; gap: 6px; }
+    .meta { flex-direction: row; align-items: center; gap: 12px; }
+  }
+</style>

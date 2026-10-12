@@ -8,9 +8,13 @@ npm run dev      # http://localhost:4321
 npm run build
 ```
 
+`main` に push すると GitHub Actions で https://mirinnano.github.io/ponkotsu-soft-astro/ にプレビューが公開される（静的配信のためフォームは動かない）。
+
 ## 内容の更新
 
-- お知らせ: `src/data/news.ts`
+- お知らせ: `src/content/news/*.md` を1件1ファイルで追加（`date` の新しい順に表示）
+- プレスリリース: 同じフォルダに `category: press` と `summary` を付けて追加 → `/press/<ファイル名>` に詳細ページができ、ナビに Press が出る
+- ギャラリー: `src/content/gallery/` に画像と .md を追加 → ナビに Gallery が出る（手順は同フォルダの `README.md.txt`）
 - 作品: `src/data/works.ts`（ページは `/works/<slug>` に自動生成）
 - メンバー: `src/data/members.ts`
 - サイト共通の文言・リンク: `src/data/site.ts`

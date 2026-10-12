@@ -1,7 +1,9 @@
 ---
 import { u } from '../lib/url';
-import { nav, site } from '../data/site';
+import { site } from '../data/site';
+import { getNav } from '../lib/content';
 import Logo from './Logo.astro';
+const nav = await getNav();
 
 // overHero: ページ先頭のヒーローの上に重ねる時の配色。light は明るい画像用（濃色文字）、dark は暗い背景用（白文字）
 interface Props { overHero?: 'light' | 'dark' }

@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import NewsList from '../../components/NewsList.astro';
+import { getNews } from '../../lib/content';
+import { site } from '../../data/site';
+
+const items = await getNews('press');
+---
+
+<Base title="Press" description="ぽんこつソフトのプレスリリース。">
+  <PageHeader label="Press" title="プレスリリース" lead={`取材・掲載のご相談は、Contact ページまたは X（@${site.twitter}）までご連絡ください。`} />
+  <section class="container list">
+    {items.length ? <NewsList items={items} /> : <p class="empty">現在公開中のプレスリリースはありません。</p>}
+  </section>
+</Base>
+
+<style>
+  .list { padding-bottom: clamp(96px, 12vw, 160px); }
+  .empty { color: var(--ink-soft); }
+</style>

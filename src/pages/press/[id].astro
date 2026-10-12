@@ -1,0 +1,39 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getNews, formatDate, isoDate } from '../../lib/content';
+import { u } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const items = await getNews('press');
+  return items.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Base title={entry.data.title} description={entry.data.summary}>
+  <article class="container article">
+    <p class="label">Press release</p>
+    <time datetime={isoDate(entry.data.date)} class="en">{formatDate(entry.data.date)}</time>
+    <h1>{entry.data.title}</h1>
+    <div class="body">
+      <Content />
+    </div>
+    <a href={u('/press')} class="back en">← All press releases</a>
+  </article>
+</Base>
+
+<style>
+  .article { max-width: calc(760px + var(--gutter) * 2); padding-top: clamp(160px, 20vw, 220px); padding-bottom: clamp(96px, 12vw, 160px); }
+  time { display: block; margin-top: 20px; color: var(--mute); letter-spacing: 0.1em; }
+  h1 { margin-top: 8px; font-size: clamp(24px, 3.2vw, 34px); letter-spacing: 0.1em; font-weight: 400; }
+  .body { margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--line); }
+  .body :global(p) { margin-bottom: 1.4em; }
+  .body :global(h2) { font-size: 20px; letter-spacing: 0.12em; margin: 2.4em 0 1em; }
+  .body :global(ul) { list-style: disc; padding-left: 1.4em; margin-bottom: 1.4em; }
+  .body :global(a) { border-bottom: 1px solid currentColor; }
+  .body :global(img) { margin-block: 2em; }
+  .back { display: inline-block; margin-top: 56px; color: var(--ink-soft); }
+</style>

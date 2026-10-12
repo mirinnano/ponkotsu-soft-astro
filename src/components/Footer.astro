@@ -1,7 +1,9 @@
 ---
 import { u } from '../lib/url';
-import { nav, site } from '../data/site';
+import { site } from '../data/site';
+import { getNav } from '../lib/content';
 import Logo from './Logo.astro';
+const nav = await getNav();
 const year = new Date().getFullYear();
 ---
 

@@ -4,7 +4,7 @@
   --paper-2: #e2f3ef;
   --ink: #1c3a3c;
   --ink-soft: #45605f;
-  --mute: #7e9894;
+  --mute: #5c7672; /* 小さい文字でも AA (4.5:1) を満たす */
   --line: rgb(28 58 60 / 0.14);
   --sun: #c9965a;
   --sea: #35b3b5;
@@ -117,7 +117,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   color: var(--mute);
 }
 
-.section { padding-block: clamp(96px, 14vw, 180px); }
+.section { padding-block: clamp(80px, 10vw, 140px); }
 
 /* 雲の虹色を拾った細い区切り線 */
 .rail {
@@ -172,6 +172,18 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   *, *::before, *::after { animation: none !important; }
+}
+
+.skip-link:focus {
+  position: fixed !important;
+  top: 12px; left: 12px;
+  width: auto; height: auto;
+  clip: auto;
+  z-index: 100;
+  padding: 8px 16px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--ink);
 }
 
 .visually-hidden {
