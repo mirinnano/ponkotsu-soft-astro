@@ -14,10 +14,10 @@
   --night-mute: #9db7b2;
   --night-line: rgb(238 247 242 / 0.15);
 
-  /* 本文・UI は読みやすいゴシック、見出しと物語の文章は明朝（ロゴと同じ Shippori Mincho） */
-  --sans-jp: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Yu Gothic', 'Noto Sans JP', sans-serif;
-  --serif-jp: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
-  --serif-en: 'Cormorant Garamond', 'Times New Roman', serif;
+  /* 文字は UI も本文もひとつの系統に：英字 Outfit（ロゴの Jost に近い幾何学系）＋和文 M PLUS 1。
+     明朝は作品タイトルなど、物語そのものを見せる所だけ */
+  --font-ui: 'Outfit', 'M PLUS 1', 'Hiragino Sans', 'Yu Gothic', 'Noto Sans JP', sans-serif;
+  --font-mincho: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
 
   --gutter: clamp(16px, 5vw, 64px);
   --max: 1120px;
@@ -53,10 +53,11 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--sans-jp);
+  font-family: var(--font-ui);
   font-size: 15.5px;
   line-height: 1.95;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -66,17 +67,15 @@ a { color: inherit; text-decoration: none; }
 p { margin: 0; }
 h1, h2, h3 {
   margin: 0;
-  font-family: var(--serif-jp);
   font-weight: 500;
   line-height: 1.5;
   font-feature-settings: 'palt';
 }
 
-/* 明朝で組む長めの文章（あらすじ・紹介文） */
+/* 長めの文章（あらすじ・紹介文） */
 .prose {
-  font-family: var(--serif-jp);
-  font-size: clamp(16px, 1.3vw, 17px);
-  line-height: 2.15;
+  font-size: clamp(15.5px, 1.2vw, 16.5px);
+  line-height: 2.1;
   letter-spacing: 0.06em;
   color: var(--ink);
 }
@@ -97,20 +96,18 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 
 .en {
-  font-family: var(--serif-en);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
 .eyebrow {
-  font-family: var(--serif-en);
+  font-family: var(--font-ui);
   font-size: 13px;
-  font-style: italic;
   letter-spacing: 0.12em;
   color: var(--mute);
 }
 
 .label {
-  font-family: var(--serif-en);
+  font-family: var(--font-ui);
   font-size: 12px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
@@ -138,7 +135,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  font-family: var(--serif-en);
+  font-family: var(--font-ui);
   font-size: 15px;
   letter-spacing: 0.16em;
   padding-bottom: 6px;
@@ -146,7 +143,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   transition: gap 0.5s var(--ease), opacity 0.3s;
 }
 .link-arrow:hover { gap: 22px; }
-.link-arrow::after { content: '→'; font-family: var(--serif-en); }
+.link-arrow::after { content: '→'; font-family: var(--font-ui); }
 
 /* Night section — used for the featured work */
 .night {

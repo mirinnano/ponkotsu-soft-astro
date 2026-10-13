@@ -64,7 +64,7 @@ const items = await Promise.all((await getGallery()).map(async (e) => ({ e, Cont
   .thumb :global(img) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; transition: transform 1s var(--ease); }
   .thumb:hover :global(img) { transform: scale(1.03); }
   .caption { display: flex; justify-content: space-between; gap: 16px; margin-top: 12px; font-size: 14px; }
-  .caption .en { color: var(--mute); font-style: italic; }
+  .caption .en { color: var(--mute); }
   .empty { color: var(--ink-soft); }
   .lightbox { border: 0; padding: 0; background: transparent; max-width: min(1200px, 94vw); color: #fff; }
   .lightbox::backdrop { background: rgb(10 25 26 / 0.86); backdrop-filter: blur(6px); }

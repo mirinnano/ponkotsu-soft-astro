@@ -36,9 +36,9 @@ const year = new Date().getFullYear();
   .logo { display: block; width: min(240px, 60vw); }
   .logo :global(img) { width: 100%; height: auto; }
   .logo:hover { opacity: 1; }
-  .links { display: grid; grid-template-columns: repeat(2, auto); gap: 0 56px; }
+  .links { display: grid; grid-template-rows: repeat(4, auto); grid-auto-flow: column; gap: 0 56px; }
   .links a {
-    font-family: var(--serif-en);
+    font-family: var(--font-ui);
     font-size: 15px;
     letter-spacing: 0.14em;
     color: var(--mute);

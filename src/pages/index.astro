@@ -41,7 +41,7 @@ const latestNews = (await getNews()).slice(0, 3);
     <p class="intro-text">
       ぽんこつソフトは、少しダークで切ないノベルゲームをつくる同人サークルです。
     </p>
-    <p class="intro-meta en">Since {site.founded} <span aria-hidden="true">·</span> Now making <i>{featured.titleEn}</i></p>
+    <p class="intro-meta en">Since {site.founded} <span aria-hidden="true">·</span> Now making {featured.titleEn}</p>
   </section>
 
   <section class="night featured">
@@ -194,7 +194,7 @@ const latestNews = (await getNews()).slice(0, 3);
     position: absolute;
     right: var(--gutter);
     bottom: clamp(28px, 6vh, 56px);
-    font-family: var(--serif-jp);
+    font-family: var(--font-ui);
     font-size: clamp(13px, 1.1vw, 15px);
     letter-spacing: 0.32em;
     color: var(--ink);
@@ -208,7 +208,7 @@ const latestNews = (await getNews()).slice(0, 3);
     text-align: center;
   }
   .intro-text {
-    font-family: var(--serif-jp);
+    font-family: var(--font-ui);
     font-size: clamp(17px, 2vw, 22px);
     letter-spacing: 0.1em;
     line-height: 2;
@@ -216,7 +216,6 @@ const latestNews = (await getNews()).slice(0, 3);
   .intro-meta {
     margin-top: 16px;
     font-size: 15px;
-    font-style: italic;
     color: var(--mute);
     letter-spacing: 0.12em;
   }
@@ -238,7 +237,9 @@ const latestNews = (await getNews()).slice(0, 3);
   .facts > div:last-child { border-bottom: 1px solid var(--line); }
   .facts dt { font-size: 13px; color: var(--mute); letter-spacing: 0.14em; }
   .facts dd { margin: 0; }
-  .member small { margin-left: 14px; font-size: 14px; font-style: italic; color: var(--mute); }
+  .member { display: block; }
+  .member + .member { margin-top: 4px; }
+  .member small { margin-left: 14px; font-size: 14px; color: var(--mute); }
   .about-links { display: flex; gap: 40px; margin-top: 40px; }
 
   /* Featured */
@@ -250,6 +251,7 @@ const latestNews = (await getNews()).slice(0, 3);
   }
   .work-title {
     margin-top: 32px;
+    font-family: var(--font-mincho);
     font-size: clamp(88px, 14vw, 180px);
     font-weight: 400;
     letter-spacing: 0.08em;
@@ -258,7 +260,6 @@ const latestNews = (await getNews()).slice(0, 3);
   .work-en {
     margin-top: 24px;
     font-size: 22px;
-    font-style: italic;
     font-weight: 300;
     color: var(--mute);
   }
@@ -266,20 +267,20 @@ const latestNews = (await getNews()).slice(0, 3);
     display: flex;
     gap: 16px;
     align-items: center;
-    font-family: var(--serif-en);
+    font-family: var(--font-ui);
     font-size: 13px;
     letter-spacing: 0.2em;
     color: var(--mute);
   }
   .status span {
-    font-family: var(--sans-jp);
+    font-family: var(--font-ui);
     font-size: 12px;
     color: var(--ink);
     border: 1px solid var(--line);
     padding: 2px 12px;
     letter-spacing: 0.2em;
   }
-  .catch { margin-top: 28px; font-family: var(--serif-jp); font-size: 19px; letter-spacing: 0.1em; }
+  .catch { margin-top: 28px; font-family: var(--font-ui); font-size: 19px; letter-spacing: 0.1em; }
   .synopsis { margin-top: 20px; margin-bottom: 48px; color: var(--ink-soft); font-size: 15px; }
   .featured-body :global(.progress) { margin-bottom: 48px; }
 
