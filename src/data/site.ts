@@ -3,7 +3,7 @@ import { u } from '../lib/url';
 export const site = {
   name: 'ぽんこつソフト',
   nameEn: 'Ponkotsu Soft',
-  tagline: '少しダークで切ないノベルゲームをつくるサークル',
+  tagline: '語りえぬ幸福を、あの夏に置いてきた。',
   title: 'ぽんこつソフト | 少しダークで切ないノベルゲームを制作するサークル',
   description:
     'ぽんこつソフトは、日常の閉塞感から抜け出すような、少しダークで切ないノベルゲームを制作するサークルです。新作『海風』制作中。',
