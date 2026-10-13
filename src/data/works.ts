@@ -19,8 +19,8 @@ export type Work = {
 export const works: Work[] = [
   {
     slug: 'hesphoros',
-    title: 'Hesphoros',
-    titleEn: 'Hesphoros',
+    title: 'HesPhoros',
+    titleEn: 'HesPhoros',
     // 宵の明星（Hesperos）と明けの明星（Phosphoros）を一語にした造語
     reading: 'ヘスフォロス',
     status: '制作中',

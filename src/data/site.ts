@@ -6,8 +6,8 @@ export const site = {
   tagline: 'ことばとしあわせのおはなし',
   title: 'ぽんこつソフト | 少しダークで切ないノベルゲームを制作するサークル',
   description:
-    'ぽんこつソフトは、少しダークで切ないノベルゲームをつくる同人サークルです。新作『Hesphoros（ヘスフォロス）』を制作中。',
-  keywords: 'ぽんこつソフト,ノベルゲーム,ビジュアルノベル,キネティックノベル,同人ゲーム,Hesphoros,ヘスフォロス',
+    'ぽんこつソフトは、少しダークで切ないノベルゲームをつくる同人サークルです。新作『HesPhoros（ヘスフォロス）』を制作中。',
+  keywords: 'ぽんこつソフト,ノベルゲーム,ビジュアルノベル,キネティックノベル,同人ゲーム,HesPhoros,ヘスフォロス',
   twitter: 'ponkotusoft',
   twitterUrl: 'https://twitter.com/ponkotusoft',
   founded: '2026',

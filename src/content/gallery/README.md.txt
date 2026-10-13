@@ -4,7 +4,7 @@
 2. 同じ名前の .md を作る（例: hesphoros-key.md）
 
 ---
-title: Hesphoros キービジュアル
+title: HesPhoros キービジュアル
 image: ./hesphoros-key.jpg
 date: 2026-10-01
 credit: イラスト：〇〇
