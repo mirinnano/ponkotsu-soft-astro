@@ -1,21 +1,27 @@
 // @ts-check
 import { defineConfig, envField } from 'astro/config';
-import vercel from '@astrojs/vercel';
+import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 
 // DEPLOY_TARGET=pages のときは GitHub Pages 向けの静的ビルド（API ルートなし）
 const isPages = process.env.DEPLOY_TARGET === 'pages';
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://ponkotsu-soft.vercel.app',
+  site: process.env.SITE_URL ?? 'https://ponkotsu-soft.workers.dev',
   base: process.env.BASE_PATH ?? '/',
-  adapter: isPages ? undefined : vercel(),
+  // 画像はビルド時に最適化（実行時の画像変換は使わない）
+  adapter: isPages ? undefined : cloudflare({ imageService: 'compile' }),
   integrations: [sitemap()],
   env: {
     schema: {
+      // クローズドベータ
       BETA_ACCESS_CODES: envField.string({ context: 'server', access: 'secret', optional: true }),
-      BETA_DOWNLOAD_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      DOWNLOAD_SIGNING_SECRET: envField.string({ context: 'server', access: 'secret', optional: true }),
+      BETA_FILE_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // お問い合わせ
       CONTACT_WEBHOOK_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      TURNSTILE_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      PUBLIC_TURNSTILE_SITE_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
     },
   },
 });

@@ -5,6 +5,7 @@ import PageHeader from '../components/PageHeader.astro';
 import AjaxForm from '../components/AjaxForm.astro';
 import { site } from '../data/site';
 import { isStaticPreview } from '../lib/env';
+import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
 ---
 
 <Base title="Contact" description="ぽんこつソフトへのお問い合わせ。">
@@ -41,6 +42,7 @@ import { isStaticPreview } from '../lib/env';
           <span>Website</span>
           <input name="website" type="text" tabindex="-1" autocomplete="off" />
         </label>
+        {PUBLIC_TURNSTILE_SITE_KEY && <div class="cf-turnstile" data-sitekey={PUBLIC_TURNSTILE_SITE_KEY} data-language="ja" />}
         <div class="submit-row">
           <button type="submit" class="link-arrow">送信する</button>
           <p class="status-msg" data-status aria-live="polite"></p>
@@ -58,6 +60,7 @@ import { isStaticPreview } from '../lib/env';
   </section>
 
   <AjaxForm />
+  {PUBLIC_TURNSTILE_SITE_KEY && !isStaticPreview && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
 </Base>
 
 <style>

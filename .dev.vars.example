@@ -1,0 +1,14 @@
+# ローカル開発用（.dev.vars にコピーして値を入れる）。本番は `npx wrangler secret put <名前>` で登録する
+
+# クローズドベータ：アクセスコード（カンマ区切りで複数可・推測されにくい長さにする）
+BETA_ACCESS_CODES=
+# ダウンロード URL の署名鍵（`openssl rand -base64 32` などで作る）
+DOWNLOAD_SIGNING_SECRET=
+# R2 に置いた配布ファイルのキー（例: umikaze/umikaze-beta-0.1.zip）
+BETA_FILE_KEY=
+
+# お問い合わせの転送先（Discord / Slack の Incoming Webhook URL）
+CONTACT_WEBHOOK_URL=
+# Cloudflare Turnstile（ボット対策）
+TURNSTILE_SECRET_KEY=
+PUBLIC_TURNSTILE_SITE_KEY=

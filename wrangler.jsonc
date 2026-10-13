@@ -1,0 +1,11 @@
+{
+  // Cloudflare Workers の設定。秘密の値は `npx wrangler secret put <名前>` で登録する（README 参照）
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ponkotsu-soft",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // main と assets は @astrojs/cloudflare がビルド時に設定する
+  "observability": { "enabled": true },
+  // ベータ版などの配布ファイル置き場（R2 は転送量が無料）
+  "r2_buckets": [{ "binding": "DOWNLOADS", "bucket_name": "ponkotsu-downloads" }]
+}

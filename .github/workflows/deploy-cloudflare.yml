@@ -1,0 +1,33 @@
+name: Deploy to Cloudflare Workers
+
+# リポジトリ変数 CLOUDFLARE_DEPLOY を true にすると、main への push で本番へデプロイする。
+# 事前に Secrets へ CLOUDFLARE_API_TOKEN と CLOUDFLARE_ACCOUNT_ID を登録しておく（README 参照）
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: cloudflare
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: vars.CLOUDFLARE_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx astro build
+        env:
+          ASTRO_TELEMETRY_DISABLED: 1
+          SITE_URL: ${{ vars.SITE_URL }}
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+      - run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

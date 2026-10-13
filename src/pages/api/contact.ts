@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { CONTACT_WEBHOOK_URL } from 'astro:env/server';
+import { CONTACT_WEBHOOK_URL, TURNSTILE_SECRET_KEY } from 'astro:env/server';
 
 export const prerender = false;
 
@@ -16,8 +16,19 @@ export const POST: APIRoute = async ({ request }) => {
   const data = await request.formData().catch(() => null);
   if (!data) return json({ error: '送信内容を読み取れませんでした。' }, 400);
 
-  // ボット対策のハニーポット
+  // ボット対策：ハニーポットと Cloudflare Turnstile
   if (field(data, 'website', 200)) return json({ ok: true });
+  if (TURNSTILE_SECRET_KEY) {
+    const body = new FormData();
+    body.set('secret', TURNSTILE_SECRET_KEY);
+    body.set('response', field(data, 'cf-turnstile-response', 2048));
+    const ip = request.headers.get('CF-Connecting-IP');
+    if (ip) body.set('remoteip', ip);
+    const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body })
+      .then((res) => res.json() as Promise<{ success: boolean }>)
+      .catch(() => ({ success: false }));
+    if (!r.success) return json({ error: '確認に失敗しました。ページを再読み込みして、もう一度お試しください。' }, 400);
+  }
 
   const name = field(data, 'name', 100);
   const email = field(data, 'email', 200);

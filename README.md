@@ -1,6 +1,6 @@
 # ぽんこつソフト Web
 
-Astro 製の公式サイト。Vercel にデプロイする想定（`@astrojs/vercel`）。
+Astro 製の公式サイト。本番は Cloudflare Workers（`@astrojs/cloudflare`）、配布ファイルは Cloudflare R2。
 
 ```bash
 npm install
@@ -33,10 +33,29 @@ PONKOTSU software。白と黒のみ。「ぽんこつ（ちょっと壊れてい
 | `logo-{black,white}.svg` | 箱なし。PONKOTSU + software |
 | `logo-compact-{black,white}.svg` | PONKOTSU のみ。ヘッダーなど小さい場所 |
 
-## 環境変数（Vercel の Project Settings で設定）
+## 本番（Cloudflare）
 
-`.env.example` を参照。未設定の間、フォームは「準備中」を返す。
+構成：ページは静的に書き出し、`/api/*`（ベータ認証・ダウンロード・お問い合わせ）だけを Worker で動かす。
+ベータ版のファイルは R2 に置き、アクセスコードが合った人にだけ 10 分間有効な署名付き URL を渡す。
 
-- `BETA_ACCESS_CODES` — クローズドベータのアクセスコード（カンマ区切り）
-- `BETA_DOWNLOAD_URL` — 認証成功時に返すダウンロード URL
-- `CONTACT_WEBHOOK_URL` — お問い合わせの転送先（Discord / Slack の Incoming Webhook）
+初回だけ行う作業：
+
+```bash
+npx wrangler login
+npx wrangler r2 bucket create ponkotsu-downloads
+npx wrangler r2 object put ponkotsu-downloads/umikaze/<ファイル名> --file <ローカルのファイル> --remote
+npx wrangler secret put BETA_ACCESS_CODES
+npx wrangler secret put DOWNLOAD_SIGNING_SECRET
+npx wrangler secret put BETA_FILE_KEY
+npx wrangler secret put CONTACT_WEBHOOK_URL
+npx wrangler secret put TURNSTILE_SECRET_KEY
+npm run build && npx wrangler deploy
+```
+
+以後は GitHub Actions で自動デプロイできる：Secrets に `CLOUDFLARE_API_TOKEN` と `CLOUDFLARE_ACCOUNT_ID`、Variables に `CLOUDFLARE_DEPLOY=true`（必要なら `SITE_URL` と `PUBLIC_TURNSTILE_SITE_KEY`）を登録する。
+
+ローカルで API まで試すときは `.dev.vars.example` を `.dev.vars` にコピーして値を入れ、`npm run build && npx astro preview`。
+
+## 環境変数
+
+`.dev.vars.example` を参照。未設定の間、ベータ認証とフォームは「停止中／準備中」を返す。
