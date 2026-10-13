@@ -8,52 +8,40 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer night">
-  <div class="container">
-    <div class="top">
-      <a href={u('/')} class="logo" aria-label={site.name}>
-        <Logo kind="badge" tone="white" />
-      </a>
-      <ul class="links">
-        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-        <li><a href={site.twitterUrl} target="_blank" rel="noopener">X (Twitter) ↗</a></li>
-      </ul>
-    </div>
-    <p class="tagline">{site.tagline}</p>
-    <hr class="rail" />
-    <p class="copy en">&copy; {year} {site.nameEn}. All rights reserved.</p>
+  <div class="container inner">
+    <a href={u('/')} class="logo" aria-label={site.name}>
+      <Logo kind="compact" tone="white" />
+    </a>
+    <ul class="links">
+      {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      <li><a href={site.twitterUrl} target="_blank" rel="noopener">X ↗</a></li>
+    </ul>
+    <p class="copy en">&copy; {year} {site.nameEn}</p>
   </div>
 </footer>
 
 <style>
-  .site-footer { padding-block: 96px 40px; }
-  .top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 48px;
-    flex-wrap: wrap;
+  .site-footer { padding-block: 56px; }
+  .inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 24px 48px;
   }
-  .logo { display: block; width: min(240px, 60vw); }
-  .logo :global(img) { width: 100%; height: auto; }
-  .logo:hover { opacity: 1; }
-  .links { display: grid; grid-template-rows: repeat(4, auto); grid-auto-flow: column; gap: 0 56px; }
+  .logo { display: block; }
+  .logo :global(img) { height: 16px; width: auto; }
+  .links { display: flex; flex-wrap: wrap; gap: 4px 28px; }
   .links a {
-    font-family: var(--font-ui);
-    font-size: 15px;
-    letter-spacing: 0.14em;
+    display: inline-block;
+    padding-block: 6px;
+    font-size: 14px;
+    letter-spacing: 0.1em;
     color: var(--mute);
-    line-height: 2.3;
     transition: color 0.3s;
   }
   .links a:hover { color: var(--ink); }
-  .tagline {
-    margin-top: 72px;
-    margin-bottom: 28px;
-    font-size: 13px;
-    letter-spacing: 0.3em;
-    color: var(--mute);
+  .copy { font-size: 12px; color: var(--mute); }
+  @media (max-width: 820px) {
+    .inner { grid-template-columns: 1fr; }
   }
-  .copy { margin-top: 24px; font-size: 12px; color: var(--mute); }
-  @media (max-width: 560px) {
-    }
 </style>
