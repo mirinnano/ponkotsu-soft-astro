@@ -14,9 +14,9 @@
   --night-mute: #9db7b2;
   --night-line: rgb(238 247 242 / 0.15);
 
-  /* 文字は UI も本文もひとつの系統に：英字 Outfit（ロゴの Jost に近い幾何学系）＋和文 M PLUS 1。
+  /* 文字は UI も本文もひとつの系統に：IBM Plex Sans ＋ IBM Plex Sans JP（硬めで端正、英字と和文が同じ設計）。
      明朝は作品タイトルなど、物語そのものを見せる所だけ */
-  --font-ui: 'Outfit', 'M PLUS 1', 'Hiragino Sans', 'Yu Gothic', 'Noto Sans JP', sans-serif;
+  --font-ui: 'IBM Plex Sans', 'IBM Plex Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Noto Sans JP', sans-serif;
   --font-mincho: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
 
   --gutter: clamp(16px, 5vw, 64px);
@@ -56,7 +56,7 @@ body {
   font-family: var(--font-ui);
   font-size: 15.5px;
   line-height: 1.95;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
