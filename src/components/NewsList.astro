@@ -1,9 +1,9 @@
 ---
 import { render } from 'astro:content';
-import { formatDate, isoDate, newsHref, type getNews } from '../lib/content';
+import { formatDate, isoDate, newsHref, eventLine, type NewsEntry } from '../lib/content';
 
 interface Props {
-  items: Awaited<ReturnType<typeof getNews>>;
+  items: NewsEntry[];
   // 一覧ページの直下に置くときは 2、セクション見出しの下に置くときは 3
   level?: 2 | 3;
 }
@@ -19,11 +19,13 @@ const rows = await Promise.all(items.map(async (e) => ({ e, href: newsHref(e), C
         <p class="meta">
           <time datetime={isoDate(e.data.date)} class="en">{formatDate(e.data.date)}</time>
           {e.data.category === 'press' && <span class="tag en">Press</span>}
+          {e.data.category === 'event' && <span class="tag en">Event</span>}
         </p>
         <div>
           <H class="title">{href ? <a href={href}>{e.data.title}</a> : e.data.title}</H>
           <div class="body">
-            {e.data.category === 'press' ? <p>{e.data.summary}</p> : <Content />}
+            {e.data.category === 'event' && <p class="event">{eventLine(e)}</p>}
+            {e.data.category === 'news' ? <Content /> : e.data.summary && <p>{e.data.summary}</p>}
           </div>
         </div>
       </li>
@@ -47,6 +49,7 @@ const rows = await Promise.all(items.map(async (e) => ({ e, href: newsHref(e), C
   .title a { border-bottom: 1px solid var(--line); transition: border-color 0.3s; }
   .title a:hover { border-color: var(--ink); }
   .body { font-size: 15px; color: var(--ink-soft); }
+  .event { color: var(--ink); margin-bottom: 4px; }
   .body :global(p + p) { margin-top: 0.8em; }
   .body :global(a) { border-bottom: 1px solid var(--line); }
   @media (max-width: 560px) {

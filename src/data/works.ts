@@ -1,5 +1,9 @@
 export type Character = { name: string; role: string; line?: string; description: string };
+import type { ImageMetadata } from 'astro';
+
 export type Spec = { term: string; desc: string };
+// 販売・配布ページ（BOOTH、DLsite、Steam のウィッシュリストなど）
+export type StoreLink = { label: string; href: string };
 export type Work = {
   slug: string;
   title: string;
@@ -12,6 +16,12 @@ export type Work = {
   progress: { label: string; value: number }[];
   characters: Character[];
   specs: Spec[];
+  // 以下は用意できたら書く。空のあいだはページに出ない
+  keyVisual?: ImageMetadata; // キービジュアル（src/assets に置いて import）
+  keyVisualAlt?: string;
+  trailer?: string; // PV の YouTube 動画 ID
+  stores?: StoreLink[];
+  release?: string; // 発売・頒布の予定（例：2027年 夏）
   setting: string;
   betaOpen: boolean;
 };

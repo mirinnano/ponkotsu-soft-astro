@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { getDiary, formatDate, isoDate } from '../lib/content';
+import { u } from '../lib/url';
+
+const items = await getDiary();
+---
+
+<Base title="Diary" description="ぽんこつソフトの開発日誌。">
+  <PageHeader label="Diary" title="開発日誌" />
+  <section class="container narrow list">
+    {
+      items.length ? (
+        <ol>
+          {items.map((e) => (
+            <li class="reveal">
+              <time datetime={isoDate(e.data.date)} class="en">{formatDate(e.data.date)}</time>
+              <a href={u(`/diary/${e.id}`)}>{e.data.title}</a>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p class="empty">準備中です。</p>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .list { padding-bottom: clamp(96px, 12vw, 160px); }
+  li { display: grid; grid-template-columns: 120px 1fr; gap: 24px; padding-block: 18px; border-top: 1px solid var(--line); }
+  li:last-child { border-bottom: 1px solid var(--line); }
+  time { color: var(--mute); letter-spacing: 0.08em; }
+  a { transition: opacity 0.3s; }
+  a:hover { opacity: 0.6; }
+  .empty { color: var(--ink-soft); }
+  @media (max-width: 560px) { li { grid-template-columns: 1fr; gap: 4px; } }
+</style>

@@ -18,6 +18,10 @@ npm run build
 - お知らせ: `src/content/news/*.md` を1件1ファイルで追加（`date` の新しい順に表示）
 - プレスリリース: 同じフォルダに `category: press` と `summary` を付けて追加 → `/press/<ファイル名>` に詳細ページができ、ナビに Press が出る
 - ギャラリー: `src/content/gallery/` に画像と .md を追加 → ナビに Gallery が出る（手順は同フォルダの `README.md.txt`）
+- イベント参加（お品書き）: お知らせに `category: event` で追加 → `/news/<ファイル名>` に詳細ページ、開催前ならトップに「次の頒布」（書き方は `src/content/news/README.md.txt`）
+- 開発日誌: `src/content/diary/` に .md を追加 → ナビに Diary が出る
+- 作品のキービジュアル・PV・販売リンク・発売予定: `src/data/works.ts` の `keyVisual` `trailer` `stores` `release`（空のあいだは表示しない）
+- プレスキット: `/presskit`（作品データとロゴから自動で作る）。RSS: `/rss.xml`
 - 作品: `src/data/works.ts`（ページは `/works/<slug>` に自動生成）
 - メンバー: `src/data/members.ts`
 - サイト共通の文言・リンク: `src/data/site.ts`

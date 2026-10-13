@@ -14,6 +14,7 @@ const year = new Date().getFullYear();
     </a>
     <ul class="links">
       {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      <li><a href={u('/presskit')}>Press kit</a></li>
       <li><a href={site.twitterUrl} target="_blank" rel="noopener">X ↗</a></li>
     </ul>
     <p class="copy en">&copy; {year} {site.nameEn}</p>

@@ -7,14 +7,26 @@ import heroImage from '../assets/hero.png';
 import Logo from '../components/Logo.astro';
 import { site } from '../data/site';
 import NewsList from '../components/NewsList.astro';
-import { getNews } from '../lib/content';
+import { getNews, getUpcomingEvent, newsHref, eventLine } from '../lib/content';
 import { works } from '../data/works';
 
 const featured = works[0];
 const latestNews = (await getNews()).slice(0, 3);
+const upcoming = await getUpcomingEvent();
 ---
 
-<Base overHero="light">
+<Base
+  overHero="light"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: site.name,
+    alternateName: site.nameEn,
+    url: new URL(u('/'), Astro.site).href,
+    logo: new URL(u('/images/logo/logo-black.svg'), Astro.site).href,
+    sameAs: [site.twitterUrl],
+  }}
+>
   <section class="hero">
     <Picture
       src={heroImage}
@@ -49,6 +61,18 @@ const latestNews = (await getNews()).slice(0, 3);
       <span class="link-arrow">View the work</span>
     </a>
   </section>
+
+  {
+    upcoming && (
+      <section class="container narrow next reveal">
+        <p class="next-label">次の頒布</p>
+        <a href={newsHref(upcoming)} class="next-body">
+          <span class="next-line">{eventLine(upcoming)}</span>
+          {upcoming.data.summary && <span class="next-summary">{upcoming.data.summary}</span>}
+        </a>
+      </section>
+    )
+  }
 
   <section class="section container narrow about reveal">
     <h2>ぽんこつソフトについて</h2>
@@ -179,6 +203,14 @@ const latestNews = (await getNews()).slice(0, 3);
   .catch { margin-top: 32px; font-size: clamp(15px, 1.5vw, 18px); letter-spacing: 0.12em; }
   .featured-inner .link-arrow { margin-top: 48px; }
   .featured-inner:hover .link-arrow { gap: 22px; }
+
+  /* 次の頒布（開催前のイベントがあるときだけ） */
+  .next { padding-top: clamp(64px, 8vw, 96px); }
+  .next-label { font-size: 13px; color: var(--mute); letter-spacing: 0.16em; }
+  .next-body { display: grid; gap: 6px; margin-top: 10px; padding: 20px 0; border-block: 1px solid var(--line); transition: opacity 0.3s; }
+  .next-body:hover { opacity: 0.7; }
+  .next-line { font-size: 17px; letter-spacing: 0.06em; }
+  .next-summary { color: var(--ink-soft); }
 
   /* About・News：一段組み */
   .about h2, .news h2 { font-size: 22px; letter-spacing: 0.16em; margin-bottom: 32px; }

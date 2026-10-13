@@ -1,0 +1,85 @@
+---
+// プレスキット：メディア・配信者・ショップ向けの資料。分かっている事実だけを載せる
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site } from '../data/site';
+import { works } from '../data/works';
+import { members } from '../data/members';
+import { u } from '../lib/url';
+
+const work = works[0];
+const logos = [
+  { label: 'サークルロゴ（箱入り・黒）', file: '/images/logo/logo-badge-black.svg' },
+  { label: 'サークルロゴ（箱入り・白）', file: '/images/logo/logo-badge-white.svg' },
+  { label: 'サークルロゴ（文字のみ・黒）', file: '/images/logo/logo-black.svg' },
+  { label: 'サークルロゴ（文字のみ・白）', file: '/images/logo/logo-white.svg' },
+  { label: `${work.title} タイトルロゴ（黒）`, file: `/images/works/${work.slug}-logo-black.svg` },
+  { label: `${work.title} タイトルロゴ（白）`, file: `/images/works/${work.slug}-logo-white.svg` },
+];
+const short = `${work.catchcopy}　2001年の秋、退学届を出したばかりの少年と、薬を飲むのをやめた少女が、鈍行列車で西へ向かう十四日間のキネティックノベル。`;
+---
+
+<Base title="Press kit" description={`${site.name}と『${work.title}』のプレスキット。ロゴ、作品情報、紹介文。`}>
+  <PageHeader label="Press kit" title="プレスキット" lead="紹介記事・配信・頒布のための資料です。ロゴと紹介文は、作品の紹介目的であれば自由にお使いください。" />
+
+  <section class="container narrow block">
+    <h2>作品情報</h2>
+    <dl class="facts">
+      <div><dt>タイトル</dt><dd>{work.title}（{work.reading}）</dd></div>
+      {work.specs.map((sp) => <div><dt>{sp.term}</dt><dd>{sp.desc}</dd></div>)}
+      {work.release && <div><dt>発売予定</dt><dd>{work.release}</dd></div>}
+      <div><dt>制作</dt><dd>{site.name}</dd></div>
+      <div><dt>公式サイト</dt><dd><a href={u(`/works/${work.slug}`)}>{new URL(u(`/works/${work.slug}`), Astro.site).href}</a></dd></div>
+    </dl>
+  </section>
+
+  <section class="container narrow block">
+    <h2>紹介文</h2>
+    <h3>短い紹介（約100字）</h3>
+    <p class="copyable">{short}</p>
+    <h3>あらすじ</h3>
+    <div class="copyable">{work.synopsis.map((p) => <p>{p}</p>)}</div>
+  </section>
+
+  <section class="container narrow block">
+    <h2>ロゴ</h2>
+    <ul class="logos">
+      {logos.map((l) => <li><a href={u(l.file)} download class="link-arrow">{l.label}</a><span class="en">SVG</span></li>)}
+    </ul>
+    <p class="note">キービジュアルとスクリーンショットは準備中です。</p>
+  </section>
+
+  <section class="container narrow block">
+    <h2>サークル</h2>
+    <dl class="facts">
+      <div><dt>サークル名</dt><dd>{site.name}（{site.nameEn}）</dd></div>
+      <div><dt>設立</dt><dd>{site.founded}年</dd></div>
+      <div><dt>メンバー</dt><dd>{members.map((m) => `${m.name}（${m.roles.join(' / ')}）`).join('、')}</dd></div>
+    </dl>
+  </section>
+
+  <section class="container narrow block last">
+    <h2>お問い合わせ</h2>
+    <p>取材・掲載・配信のご相談は、X（<a href={site.twitterUrl} target="_blank" rel="noopener">@{site.twitter}</a>）の DM か、<a href={u('/contact')}>お問い合わせ</a>からご連絡ください。</p>
+  </section>
+</Base>
+
+<style>
+  .block { padding-bottom: clamp(64px, 8vw, 104px); }
+  .last { padding-bottom: clamp(96px, 12vw, 160px); }
+  h2 { font-size: 22px; letter-spacing: 0.16em; margin-bottom: 28px; }
+  h3 { font-size: 14px; color: var(--mute); letter-spacing: 0.12em; margin: 28px 0 10px; font-weight: 500; }
+  h3:first-of-type { margin-top: 0; }
+  .facts > div { display: grid; grid-template-columns: 110px 1fr; gap: 24px; padding-block: 14px; border-top: 1px solid var(--line); }
+  .facts > div:last-child { border-bottom: 1px solid var(--line); }
+  .facts dt { font-size: 13px; color: var(--mute); letter-spacing: 0.12em; }
+  .facts dd { margin: 0; overflow-wrap: anywhere; }
+  .copyable { padding: 18px 20px; background: var(--paper-2); }
+  .copyable p + p { margin-top: 0.6em; }
+  .logos li { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 14px; border-top: 1px solid var(--line); }
+  .logos li:last-child { border-bottom: 1px solid var(--line); }
+  .logos .en { font-size: 12px; color: var(--mute); }
+  .note { margin-top: 20px; color: var(--ink-soft); }
+  a:not(.link-arrow) { border-bottom: 1px solid currentColor; }
+  @media (max-width: 560px) { .facts > div { grid-template-columns: 1fr; gap: 2px; } }
+</style>

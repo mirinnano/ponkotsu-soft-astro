@@ -1,9 +1,11 @@
 ---
 import WorkLogo from '../../components/WorkLogo.astro';
 import { u } from '../../lib/url';
+import { site } from '../../data/site';
 import Base from '../../layouts/Base.astro';
 import AjaxForm from '../../components/AjaxForm.astro';
 import { formsEnabled } from '../../lib/env';
+import { Image } from 'astro:assets';
 import { works, type Work } from '../../data/works';
 
 export function getStaticPaths() {
@@ -19,7 +21,24 @@ const share = [
 ];
 ---
 
-<Base overHero="dark" title={work.title} description={`${work.catchcopy}。${work.synopsis.slice(0, 2).join('')}`}>
+<Base
+  overHero="dark"
+  title={work.title}
+  description={`${work.catchcopy}　${work.synopsis.slice(0, 2).join('')}`}
+  image={`/images/works/${work.slug}-ogp.jpg`}
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'VideoGame',
+    name: work.title,
+    alternateName: work.reading,
+    genre: work.genre,
+    description: work.catchcopy,
+    inLanguage: 'ja',
+    url: pageUrl,
+    image: new URL(u(`/images/works/${work.slug}-ogp.jpg`), Astro.site).href,
+    author: { '@type': 'Organization', name: site.name },
+  }}
+>
   <section class="night hero">
     <div class="container narrow hero-inner">
       <h1 class="title"><WorkLogo slug={work.slug} title={work.title} tone="white" loading="eager" /></h1>
@@ -28,6 +47,12 @@ const share = [
     </div>
   </section>
 
+  {work.keyVisual && (
+    <figure class="key-visual">
+      <Image src={work.keyVisual} alt={work.keyVisualAlt ?? `${work.title} キービジュアル`} widths={[960, 1600, 2400]} sizes="100vw" loading="eager" />
+    </figure>
+  )}
+
   <section class="section container narrow story reveal">
     <h2>あらすじ</h2>
     <div class="story-body">
@@ -35,6 +60,15 @@ const share = [
       <span class="wait" aria-hidden="true">▼</span>
     </div>
   </section>
+
+  {work.trailer && (
+    <section class="container narrow block trailer reveal">
+      <h2>PV</h2>
+      <div class="video">
+        <iframe src={`https://www.youtube-nocookie.com/embed/${work.trailer}`} title={`${work.title} PV`} loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </section>
+  )}
 
   <section class="container narrow block characters-section reveal">
     <h2>登場人物</h2>
@@ -63,12 +97,27 @@ const share = [
           </div>
         ))
       }
+      {work.release && (
+        <div>
+          <dt>発売予定</dt>
+          <dd>{work.release}</dd>
+        </div>
+      )}
       <div>
         <dt>進捗</dt>
         <dd>{work.progress.map((p) => `${p.label} ${p.value}%`).join('、')}</dd>
       </div>
     </dl>
   </section>
+
+  {work.stores?.length && (
+    <section class="container narrow block stores reveal">
+      <h2>入手方法</h2>
+      <ul>
+        {work.stores.map((st) => <li><a href={st.href} target="_blank" rel="noopener" class="link-arrow">{st.label}</a></li>)}
+      </ul>
+    </section>
+  )}
 
   {
     work.betaOpen && (
@@ -158,6 +207,13 @@ const share = [
   .specs dt { font-size: 13px; color: var(--mute); letter-spacing: 0.14em; }
   .specs dd { margin: 0; }
   .characters-section { padding-bottom: 0; }
+  .key-visual { margin: 0; }
+  .key-visual :global(img) { display: block; width: 100%; height: auto; max-height: 80svh; object-fit: cover; }
+  .trailer { padding-bottom: clamp(80px, 10vw, 140px); }
+  .video { position: relative; aspect-ratio: 16 / 9; background: var(--paper-2); }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .stores { padding-bottom: clamp(80px, 10vw, 140px); }
+  .stores ul { display: flex; flex-wrap: wrap; gap: 20px 40px; }
   .characters { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
   .characters li { background: var(--paper); padding: 40px 32px; }
   .role { font-size: 13px; color: var(--mute); }
