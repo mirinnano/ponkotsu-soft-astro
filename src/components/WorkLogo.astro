@@ -1,0 +1,27 @@
+---
+// 作品ロゴ（public/images/works/<slug>-logo[-vertical]-<black|white>.svg）。auto は OS のダークモードで黒/白を切り替える
+import { u } from '../lib/url';
+
+interface Props {
+  slug: string;
+  title: string;
+  layout?: 'horizontal' | 'vertical';
+  tone?: 'auto' | 'black' | 'white';
+  class?: string;
+  loading?: 'eager' | 'lazy';
+}
+const { slug, title, layout = 'horizontal', tone = 'auto', class: className, loading = 'lazy' } = Astro.props;
+const size = layout === 'vertical' ? [210, 321] : [354, 187];
+const src = (t: 'black' | 'white') => u(`/images/works/${slug}-logo${layout === 'vertical' ? '-vertical' : ''}-${t}.svg`);
+---
+
+{
+  tone === 'auto' ? (
+    <picture class={className}>
+      <source srcset={src('white')} media="(prefers-color-scheme: dark)" />
+      <img src={src('black')} alt={title} width={size[0]} height={size[1]} loading={loading} decoding="async" />
+    </picture>
+  ) : (
+    <img class={className} src={src(tone)} alt={title} width={size[0]} height={size[1]} loading={loading} decoding="async" />
+  )
+}

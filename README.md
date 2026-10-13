@@ -36,6 +36,11 @@ PONKOTSU software。白と黒のみ。「ぽんこつ（ちょっと壊れてい
 | `logo-{black,white}.svg` | 箱なし。PONKOTSU + software |
 | `logo-compact-{black,white}.svg` | PONKOTSU のみ。ヘッダーなど小さい場所 |
 
+## 作品ロゴ
+
+`npm run work-logo`（= `node scripts/generate-work-logo.mjs`）で `public/images/works/umikaze-logo[-vertical]-{black,white}.svg` を書き出す。
+題字は Shippori Mincho B1、欧文は Cormorant Garamond。水平線を一本添える（縦組みは「海」と「風」のあいだ、横組みは題字と UMIKAZE のあいだ）。
+
 ## 本番（Cloudflare）
 
 構成：ページは静的に書き出し、`/api/*`（ベータ認証・ダウンロード・お問い合わせ）だけを Worker で動かす。

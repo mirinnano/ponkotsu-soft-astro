@@ -1,4 +1,5 @@
 ---
+import WorkLogo from '../../components/WorkLogo.astro';
 import { u } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
@@ -17,7 +18,7 @@ import { works, totalProgress } from '../../data/works';
               <span class="status">{w.status}</span>
               <span class="en">{w.genre}</span>
             </p>
-            <h2>{w.title}</h2>
+            <h2><WorkLogo slug={w.slug} title={w.title} /></h2>
             <p class="catch">{w.catchcopy}</p>
             <p class="setting">{w.setting}</p>
             <p class="synopsis">{w.synopsis.slice(0, 2).join('')}</p>
@@ -44,8 +45,9 @@ import { works, totalProgress } from '../../data/works';
   }
   .meta { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--mute); }
   .status { border: 1px solid var(--line); padding: 1px 12px; color: var(--ink); font-size: 12px; letter-spacing: 0.2em; }
-  h2 { margin-top: 20px; font-family: var(--font-mincho); font-size: clamp(40px, 6vw, 64px); line-height: 1.2; letter-spacing: 0.16em; }
-  .catch { margin-top: 12px; font-family: var(--font-ui); font-size: 17px; letter-spacing: 0.08em; }
+  h2 { margin-top: 24px; }
+  h2 :global(img) { width: clamp(200px, 22vw, 280px); height: auto; }
+  .catch { margin-top: 24px; font-family: var(--font-ui); font-size: 17px; letter-spacing: 0.08em; }
   .setting { margin-top: 6px; font-size: 13px; color: var(--mute); letter-spacing: 0.12em; }
   .synopsis { margin-top: 24px; font-size: 15px; color: var(--ink-soft); }
   .foot {

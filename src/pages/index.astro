@@ -1,4 +1,5 @@
 ---
+import WorkLogo from '../components/WorkLogo.astro';
 import { u } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import { Picture } from 'astro:assets';
@@ -48,8 +49,7 @@ const latestNews = (await getNews()).slice(0, 3);
     <div class="container section featured-inner">
       <div class="featured-title reveal">
         <p class="label">Works</p>
-        <h2 class="work-title">{featured.title}</h2>
-        <p class="work-en en">{featured.titleEn}</p>
+        <h2 class="work-title"><WorkLogo slug={featured.slug} title={featured.title} tone="white" /></h2>
       </div>
       <div class="featured-body reveal">
         <p class="status"><span>{featured.status}</span>{featured.genre}</p>
@@ -249,20 +249,8 @@ const latestNews = (await getNews()).slice(0, 3);
     gap: 64px;
     align-items: end;
   }
-  .work-title {
-    margin-top: 32px;
-    font-family: var(--font-mincho);
-    font-size: clamp(88px, 14vw, 180px);
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    line-height: 1;
-  }
-  .work-en {
-    margin-top: 24px;
-    font-size: 22px;
-    font-weight: 300;
-    color: var(--mute);
-  }
+  .work-title { margin-top: 32px; }
+  .work-title :global(img) { width: clamp(220px, 26vw, 340px); height: auto; }
   .status {
     display: flex;
     gap: 16px;

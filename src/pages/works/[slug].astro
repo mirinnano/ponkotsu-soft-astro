@@ -1,4 +1,5 @@
 ---
+import WorkLogo from '../../components/WorkLogo.astro';
 import { u } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import Progress from '../../components/Progress.astro';
@@ -27,7 +28,7 @@ const share = [
         <p class="meta"><span class="status">{work.status}</span><span class="en">{work.genre}</span><span class="en">{work.titleEn}</span></p>
         <p class="catch">{work.catchcopy}</p>
       </div>
-      <h1 class="title">{work.title}</h1>
+      <h1 class="title"><WorkLogo slug={work.slug} title={work.title} layout="vertical" tone="white" loading="eager" /></h1>
     </div>
   </section>
 
@@ -140,16 +141,12 @@ const share = [
     gap: 24px 48px;
   }
   .title {
-    font-family: var(--font-mincho);
     grid-column: 2;
     grid-row: 1 / 3;
-    writing-mode: vertical-rl;
-    font-size: clamp(96px, 16vw, 200px);
-    font-weight: 400;
-    letter-spacing: 0.24em;
-    line-height: 1;
+    align-self: center;
     animation: fade 2.4s var(--ease) both 0.2s;
   }
+  .title :global(img) { width: clamp(150px, 15vw, 220px); height: auto; }
   .hero-text { grid-column: 1; grid-row: 2; align-self: end; animation: fade 2s var(--ease) both 0.9s; }
   .meta { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--mute); }
   .status { border: 1px solid var(--line); padding: 1px 12px; color: var(--ink); font-size: 12px; letter-spacing: 0.2em; }
@@ -259,6 +256,7 @@ const share = [
   }
   @media (max-width: 560px) {
     .hero-inner { grid-template-columns: 1fr; }
-    .title { grid-column: 1; grid-row: 1; justify-self: end; font-size: 96px; }
+    .title { grid-column: 1; grid-row: 1; justify-self: end; }
+    .title :global(img) { width: 130px; }
   }
 </style>
