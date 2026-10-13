@@ -16,7 +16,7 @@ const facts = [
 <Base title="About" description="ぽんこつソフトのサークル概要、メンバー、二次創作ガイドライン。">
   <PageHeader label="About" title="ぽんこつソフトについて" />
 
-  <section class="container about">
+  <section class="container narrow about">
     <div class="statement prose reveal">
       <p>
         ぽんこつソフトは、少しダークで切ないノベルゲームをつくる同人サークルです。シナリオは、2000年前後のノベルゲームに強く影響を受けています。
@@ -38,8 +38,7 @@ const facts = [
     </dl>
   </section>
 
-  <section class="container block" id="members">
-    <p class="label reveal">Members</p>
+  <section class="container narrow block" id="members">
     <div class="reveal">
       <h2>メンバー</h2>
       <ul class="members">
@@ -55,8 +54,7 @@ const facts = [
     </div>
   </section>
 
-  <section class="container block" id="guideline">
-    <p class="label reveal">Guideline</p>
+  <section class="container narrow block" id="guideline">
     <div class="reveal guideline">
       <h2>二次創作ガイドライン</h2>
       <dl>
@@ -86,21 +84,18 @@ const facts = [
 </Base>
 
 <style>
-  .about {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: clamp(48px, 8vw, 120px);
-    padding-bottom: clamp(96px, 12vw, 160px);
-  }
+  .about { padding-bottom: clamp(80px, 10vw, 140px); }
+  .about .facts { margin-top: 48px; }
   .statement p { font-size: clamp(16px, 1.5vw, 18px); }
   .statement p + p { margin-top: 2em; }
   .facts > div { padding-block: 22px; border-top: 1px solid var(--line); }
   .facts > div:last-child { border-bottom: 1px solid var(--line); }
   dt { font-size: 13px; letter-spacing: 0.14em; color: var(--mute); }
   dd { margin: 6px 0 0; font-size: 15px; }
-  .block { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; padding-bottom: clamp(80px, 10vw, 140px); }
+  .block { padding-bottom: clamp(80px, 10vw, 140px); }
   h2 { font-size: 22px; letter-spacing: 0.2em; margin-bottom: 32px; }
-  .members li { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; padding-block: 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .members li { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; padding-block: 18px; border-top: 1px solid var(--line); }
+  .members li:last-child { border-bottom: 1px solid var(--line); }
   .m-name { font-family: var(--font-ui); font-size: 18px; letter-spacing: 0.14em; }
   .m-roles { color: var(--mute); }
   .guideline dl > div { padding-block: 22px; border-top: 1px solid var(--line); }
@@ -110,7 +105,4 @@ const facts = [
   .ask { margin-top: 28px; color: var(--ink-soft); }
   .ask a { border-bottom: 1px solid currentColor; }
 
-  @media (max-width: 820px) {
-    .about, .block { grid-template-columns: 1fr; gap: 24px; }
-  }
 </style>

@@ -9,7 +9,7 @@ import { works, totalProgress } from '../../data/works';
 <Base title="Works" description="ぽんこつソフトの作品一覧。">
   <PageHeader label="Works" title="作品" />
 
-  <section class="container list">
+  <section class="container narrow list">
     {
       works.map((w) => (
         <a href={u(`/works/${w.slug}`)} class="work reveal">

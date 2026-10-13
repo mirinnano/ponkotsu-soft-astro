@@ -2,10 +2,9 @@
 import WorkLogo from '../../components/WorkLogo.astro';
 import { u } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
-import Progress from '../../components/Progress.astro';
 import AjaxForm from '../../components/AjaxForm.astro';
 import { isStaticPreview } from '../../lib/env';
-import { works, totalProgress, type Work } from '../../data/works';
+import { works, type Work } from '../../data/works';
 
 export function getStaticPaths() {
   return works.map((work) => ({ params: { slug: work.slug }, props: { work } }));
@@ -15,111 +14,86 @@ const { work } = Astro.props as { work: Work };
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
 const enc = encodeURIComponent;
 const share = [
-  { label: 'X', href: `https://twitter.com/intent/tweet?text=${enc(work.title)}&url=${enc(pageUrl)}&hashtags=${enc('ぽんこつソフト,ノベルゲーム')}` },
-  { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${enc(pageUrl)}` },
-  { label: 'LINE', href: `https://social-plugins.line.me/lineit/share?url=${enc(pageUrl)}` },
+  { label: 'X でシェア', href: `https://twitter.com/intent/tweet?text=${enc(work.title)}&url=${enc(pageUrl)}&hashtags=${enc('ぽんこつソフト,ノベルゲーム')}` },
+  { label: 'LINE で送る', href: `https://social-plugins.line.me/lineit/share?url=${enc(pageUrl)}` },
 ];
 ---
 
 <Base overHero="dark" title={work.title} description={`${work.catchcopy}。${work.synopsis.slice(0, 2).join('')}`}>
   <section class="night hero">
-    <div class="container hero-inner">
-      <div class="hero-text">
-        <p class="meta"><span class="status">{work.status}</span><span class="en">{work.genre}</span><span>{work.reading}</span></p>
-        <p class="catch">{work.catchcopy}</p>
-      </div>
+    <div class="container narrow hero-inner">
       <h1 class="title"><WorkLogo slug={work.slug} title={work.title} tone="white" loading="eager" /></h1>
+      <p class="meta"><span class="status">{work.status}</span><span class="en">{work.genre}</span><span>{work.reading}</span></p>
+      <p class="catch">{work.catchcopy}</p>
     </div>
   </section>
 
-  <section class="section container block">
-    <p class="label reveal">Story</p>
-    <div class="story reveal">
-      <h2>あらすじ</h2>
-      <div class="story-body">
-        {work.synopsis.map((p) => <p>{p}</p>)}
-        <span class="wait" aria-hidden="true">▼</span>
+  <section class="section container narrow story reveal">
+    <h2>あらすじ</h2>
+    <div class="story-body">
+      {work.synopsis.map((p) => <p>{p}</p>)}
+      <span class="wait" aria-hidden="true">▼</span>
+    </div>
+  </section>
+
+  <section class="container narrow block characters-section reveal">
+    <h2>登場人物</h2>
+    <ul class="characters">
+      {
+        work.characters.map((c) => (
+          <li>
+            <p class="role en">{c.role}</p>
+            <h3>{c.name}</h3>
+            {c.line && <p class="line">「{c.line}」</p>}
+            <p class="desc">{c.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section container narrow block reveal">
+    <h2>作品情報</h2>
+    <dl class="specs">
+      {
+        work.specs.map((sp) => (
+          <div>
+            <dt>{sp.term}</dt>
+            <dd>{sp.desc}</dd>
+          </div>
+        ))
+      }
+      <div>
+        <dt>進捗</dt>
+        <dd>{work.progress.map((p) => `${p.label} ${p.value}%`).join('、')}</dd>
       </div>
-    </div>
-  </section>
-
-  <section class="container block specs-section">
-    <p class="label reveal">Spec</p>
-    <div class="reveal">
-      <h2>作品情報</h2>
-      <dl class="specs">
-        {
-          work.specs.map((sp) => (
-            <div>
-              <dt>{sp.term}</dt>
-              <dd>{sp.desc}</dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
-  </section>
-
-  <section class="container block characters-section">
-    <p class="label reveal">Characters</p>
-    <div>
-      <h2 class="reveal">登場人物</h2>
-      <ul class="characters">
-        {
-          work.characters.map((c) => (
-            <li class="reveal">
-              <p class="role en">{c.role}</p>
-              <h3>{c.name}</h3>
-              {c.line && <p class="line">「{c.line}」</p>}
-              <p class="desc">{c.description}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <section class="section container block">
-    <p class="label reveal">Development</p>
-    <div class="reveal">
-      <h2>開発状況</h2>
-      <div class="progress-list">
-        {work.progress.map((p) => <Progress label={p.label} value={p.value} />)}
-      </div>
-      <p class="total en">Overall — {totalProgress(work)}%</p>
-    </div>
+    </dl>
   </section>
 
   {
     work.betaOpen && (
       <section id="download" class="download">
-        <div class="container block section">
-          <p class="label reveal">Download</p>
-          <div class="reveal">
-            <h2>クローズドベータテスト</h2>
-            <p class="note">
-              現在クローズドベータテスト中です。テスターの方は以下にアクセスコードを入力してください。
-            </p>
-            {isStaticPreview ? (
-              <p class="notice">このプレビュー版では認証できません。テスターの方には X の DM でご案内しています。</p>
-            ) : (
-            <form action={u('/api/beta')} method="post" class="beta-form" data-ajax-form>
-              <label class="visually-hidden" for="token">アクセスコード</label>
-              <div class="field">
-                <input id="token" name="token" type="text" placeholder="アクセスコード" autocomplete="off" required />
-                <button type="submit">認証する</button>
-              </div>
-              <p class="status-msg" data-status aria-live="polite" />
-            </form>
-            )}
-          </div>
+        <div class="container narrow section reveal">
+          <h2>クローズドベータテスト</h2>
+          <p class="note">現在クローズドベータテスト中です。テスターの方は、以下にアクセスコードを入力してください。</p>
+          {isStaticPreview ? (
+            <p class="notice">このプレビュー版では認証できません。テスターの方には X の DM でご案内しています。</p>
+          ) : (
+          <form action={u('/api/beta')} method="post" class="beta-form" data-ajax-form>
+            <label class="visually-hidden" for="token">アクセスコード</label>
+            <div class="field">
+              <input id="token" name="token" type="text" placeholder="アクセスコード" autocomplete="off" required />
+              <button type="submit">認証する</button>
+            </div>
+            <p class="status-msg" data-status aria-live="polite" />
+          </form>
+          )}
         </div>
       </section>
     )
   }
 
-  <section class="container share">
-    <span class="label">Share</span>
+  <section class="container narrow share">
     <ul>
       {share.map((s) => <li><a href={s.href} target="_blank" rel="noopener">{s.label}</a></li>)}
     </ul>
@@ -130,25 +104,22 @@ const share = [
 </Base>
 
 <style>
-  .hero { min-height: min(72svh, 760px); display: flex; }
+  .hero { display: flex; }
   .hero-inner {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    gap: 40px;
-    padding-top: 140px;
-    padding-bottom: 72px;
+    padding-top: clamp(150px, 18vw, 220px);
+    padding-bottom: clamp(64px, 8vw, 96px);
   }
-  .title { order: -1; animation: fade 2.4s var(--ease) both 0.2s; }
-  .title :global(img) { width: clamp(220px, 34vw, 420px); height: auto; }
+  .title { animation: fade 2.4s var(--ease) both 0.2s; margin-bottom: 36px; }
+  .title :global(img) { width: clamp(240px, 46vw, 520px); height: auto; }
   .hero-text { animation: fade 2s var(--ease) both 0.9s; }
   .meta { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--mute); }
   .status { border: 1px solid var(--line); padding: 1px 12px; color: var(--ink); font-size: 12px; letter-spacing: 0.2em; }
   .catch { margin-top: 20px; font-family: var(--font-ui); font-size: clamp(16px, 1.8vw, 20px); letter-spacing: 0.14em; }
   @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-  .block { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
-  h2 { font-size: 22px; letter-spacing: 0.2em; margin-bottom: 36px; }
+  h2 { font-size: 22px; letter-spacing: 0.16em; margin-bottom: 32px; }
   /* あらすじは小説の頁のように明朝で。広い画面では縦書き。最後に、ノベルゲームの頁送りの ▼ だけを置く */
   .story-body {
     font-family: var(--font-mincho);
@@ -182,12 +153,11 @@ const share = [
   }
 
   .setting { margin-top: 10px; font-size: 13px; color: var(--mute); letter-spacing: 0.12em; }
-  .specs-section { padding-bottom: clamp(80px, 10vw, 140px); }
   .specs > div { display: grid; grid-template-columns: 96px 1fr; gap: 20px; padding-block: 16px; border-top: 1px solid var(--line); }
   .specs > div:last-child { border-bottom: 1px solid var(--line); }
   .specs dt { font-size: 13px; color: var(--mute); letter-spacing: 0.14em; }
   .specs dd { margin: 0; }
-  .characters-section { padding-bottom: clamp(48px, 6vw, 80px); }
+  .characters-section { padding-bottom: 0; }
   .characters { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
   .characters li { background: var(--paper); padding: 40px 32px; }
   .role { font-size: 13px; color: var(--mute); }
@@ -195,8 +165,6 @@ const share = [
   .characters .line { font-family: var(--font-mincho); font-size: 16px; letter-spacing: 0.06em; margin-bottom: 14px; }
   .characters .desc { font-size: 15px; color: var(--ink-soft); }
 
-  .progress-list { display: grid; gap: 28px; max-width: 520px; }
-  .total { margin-top: 20px; font-size: 13px; color: var(--mute); letter-spacing: 0.14em; }
 
   .download { background: var(--paper-2); }
   .note { color: var(--ink-soft); max-width: 32em; }
@@ -233,6 +201,7 @@ const share = [
   .status-msg[data-state='error'] { color: #a4533f; }
 
   .share {
+    justify-content: space-between;
     display: flex;
     align-items: center;
     gap: 32px;
@@ -242,10 +211,10 @@ const share = [
   .share ul { display: flex; gap: 8px; }
   .share a { display: inline-block; padding: 10px 12px; font-family: var(--font-ui); letter-spacing: 0.12em; color: var(--ink-soft); transition: color 0.3s; }
   .share a:hover { color: var(--ink); }
+  .share li:first-child a { padding-left: 0; }
   .back { margin-left: auto; }
 
   @media (max-width: 820px) {
-    .block { grid-template-columns: 1fr; gap: 24px; }
     .characters { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {

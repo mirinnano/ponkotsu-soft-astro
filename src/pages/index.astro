@@ -4,12 +4,11 @@ import { u } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import { Picture } from 'astro:assets';
 import heroImage from '../assets/hero.png';
-import Progress from '../components/Progress.astro';
 import Logo from '../components/Logo.astro';
 import { site } from '../data/site';
 import NewsList from '../components/NewsList.astro';
 import { getNews } from '../lib/content';
-import { works, totalProgress } from '../data/works';
+import { works } from '../data/works';
 import { members } from '../data/members';
 
 const featured = works[0];
@@ -39,81 +38,47 @@ const latestNews = (await getNews()).slice(0, 3);
   </section>
 
   <section id="intro" class="container intro reveal">
-    <p class="intro-text">
-      ぽんこつソフトは、少しダークで切ないノベルゲームをつくる同人サークルです。
-    </p>
-    <p class="intro-meta en">Since {site.founded} <span aria-hidden="true">·</span> Now making {featured.titleEn}</p>
+    <p class="intro-text">ぽんこつソフトは、少しダークで切ないノベルゲームをつくる同人サークルです。</p>
+    <p class="intro-meta en">Since {site.founded}</p>
   </section>
 
   <section class="night featured">
-    <div class="container section featured-inner">
-      <div class="featured-title reveal">
-        <p class="label">Works</p>
-        <h2 class="work-title"><WorkLogo slug={featured.slug} title={featured.title} tone="white" /></h2>
-      </div>
-      <div class="featured-body reveal">
-        <p class="status"><span>{featured.status}</span>{featured.genre}</p>
-        <p class="catch">{featured.catchcopy}</p>
-        <p class="synopsis">
-          {featured.synopsis[0]}
-          {featured.synopsis[1]}
-        </p>
-        <Progress label="開発進捗" value={totalProgress(featured)} />
-        <a href={u(`/works/${featured.slug}`)} class="link-arrow">View the work</a>
-      </div>
-    </div>
+    <a href={u(`/works/${featured.slug}`)} class="container featured-inner reveal">
+      <p class="status"><span>{featured.status}</span>{featured.genre}</p>
+      <h2 class="work-title"><WorkLogo slug={featured.slug} title={featured.title} tone="white" /></h2>
+      <p class="catch">{featured.catchcopy}</p>
+      <span class="link-arrow">View the work</span>
+    </a>
   </section>
 
-  <section class="section container about">
-    <div class="about-head reveal">
-      <p class="label">About</p>
-      <h2>ぽんこつソフトについて</h2>
+  <section class="section container narrow about reveal">
+    <h2>ぽんこつソフトについて</h2>
+    <div class="prose">
+      <p>シナリオは、2000年前後のノベルゲームに強く影響を受けています。</p>
+      <p>立ち絵は大事な場面だけに使い、風景と文章で読ませる作品を目指しています。いま制作しているのは、鈍行列車で西へ向かう二人の十四日間を描くキネティックノベル『{featured.title}』です。</p>
     </div>
-    <div class="about-body reveal">
-      <div class="prose">
-        <p>
-          ぽんこつソフトは、少しダークで切ないノベルゲームをつくる同人サークルです。シナリオは、2000年前後のノベルゲームに強く影響を受けています。
-        </p>
-        <p>
-          立ち絵は大事な場面だけに使い、風景と文章で読ませる作品を目指しています。いま制作しているのは、鈍行列車で西へ向かう二人の十四日間を描くキネティックノベル『HesPhoros』です。
-        </p>
+    <dl class="facts">
+      <div><dt>設立</dt><dd>{site.founded}年</dd></div>
+      <div><dt>活動</dt><dd>ビジュアルノベル（キネティックノベル）の企画・制作</dd></div>
+      <div>
+        <dt>メンバー</dt>
+        <dd>
+          {members.map((m) => (
+            <span class="member">{m.name}<small class="en">{m.roles.join(' / ')}</small></span>
+          ))}
+        </dd>
       </div>
-      <dl class="facts">
-        <div><dt>設立</dt><dd>{site.founded}年</dd></div>
-        <div><dt>活動</dt><dd>ビジュアルノベル（キネティックノベル）の企画・制作</dd></div>
-        <div>
-          <dt>メンバー</dt>
-          <dd>
-            {members.map((m) => (
-              <span class="member">{m.name}<small class="en">{m.roles.join(' / ')}</small></span>
-            ))}
-          </dd>
-        </div>
-      </dl>
-      <p class="about-links">
-        <a href={u('/about')} class="link-arrow">About us</a>
-        <a href={u('/members')} class="link-arrow">Members</a>
-      </p>
-    </div>
+    </dl>
+    <p class="about-links">
+      <a href={u('/about')} class="link-arrow">About us</a>
+      <a href={u('/members')} class="link-arrow">Members</a>
+    </p>
   </section>
 
-  <section class="section container news">
-    <div class="news-head reveal">
-      <p class="label">News</p>
-      <h2>お知らせ</h2>
-    </div>
-    <div>
-      <NewsList items={latestNews} />
-      <a href={u('/news')} class="link-arrow more">All news</a>
-    </div>
-  </section>
-
-  <section class="follow container reveal">
-    <hr class="rail" />
-    <div class="follow-inner">
-      <p>最新情報は X でお知らせしています。</p>
-      <a href={site.twitterUrl} target="_blank" rel="noopener" class="link-arrow">@{site.twitter}</a>
-    </div>
+  <section class="section container narrow news reveal">
+    <h2>お知らせ</h2>
+    <NewsList items={latestNews} />
+    <a href={u('/news')} class="link-arrow more">All news</a>
   </section>
 </Base>
 
@@ -203,98 +168,45 @@ const latestNews = (await getNews()).slice(0, 3);
   @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
   /* Intro：ひと目でわかる紹介 */
-  .intro {
-    padding-block: clamp(72px, 10vw, 120px);
-    text-align: center;
-  }
-  .intro-text {
-    font-family: var(--font-ui);
-    font-size: clamp(17px, 2vw, 22px);
-    letter-spacing: 0.1em;
-    line-height: 2;
-  }
-  .intro-meta {
-    margin-top: 16px;
-    font-size: 15px;
-    color: var(--mute);
-    letter-spacing: 0.12em;
-  }
-  .intro-meta span { margin-inline: 10px; }
+  .intro { padding-block: clamp(72px, 10vw, 120px); text-align: center; }
+  .intro-text { font-size: clamp(16px, 1.8vw, 20px); letter-spacing: 0.08em; line-height: 2; }
+  .intro-meta { margin-top: 12px; font-size: 13px; color: var(--mute); letter-spacing: 0.16em; }
 
-  /* About：詳しい紹介 */
-  .about { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
-  .about-head h2 { margin-top: 16px; font-size: 24px; letter-spacing: 0.2em; }
-  .about-body .prose p + p { margin-top: 1.4em; }
-  .about-body .prose { max-width: 34em; }
-  .facts { margin-top: 48px; }
-  .facts > div {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 24px;
-    padding-block: 18px;
-    border-top: 1px solid var(--line);
+  /* 作品：ロゴを主役に中央へ。ブロック全体が作品ページへのリンク */
+  .featured-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-block: clamp(96px, 13vw, 168px);
+    color: inherit;
   }
+  .status { display: flex; gap: 14px; align-items: center; font-size: 13px; color: var(--mute); letter-spacing: 0.14em; }
+  .status span { font-size: 12px; color: var(--ink); border: 1px solid var(--line); padding: 1px 12px; letter-spacing: 0.2em; }
+  .work-title { margin-top: 36px; }
+  .work-title :global(img) { width: clamp(240px, 40vw, 520px); height: auto; }
+  .catch { margin-top: 32px; font-size: clamp(15px, 1.5vw, 18px); letter-spacing: 0.12em; }
+  .featured-inner .link-arrow { margin-top: 48px; }
+  .featured-inner:hover .link-arrow { gap: 22px; }
+
+  /* About・News：一段組み */
+  .about h2, .news h2 { font-size: 22px; letter-spacing: 0.16em; margin-bottom: 32px; }
+  .about .prose { max-width: 34em; }
+  .about .prose p + p { margin-top: 1.2em; }
+  .facts { margin-top: 40px; }
+  .facts > div { display: grid; grid-template-columns: 100px 1fr; gap: 24px; padding-block: 16px; border-top: 1px solid var(--line); }
   .facts > div:last-child { border-bottom: 1px solid var(--line); }
   .facts dt { font-size: 13px; color: var(--mute); letter-spacing: 0.14em; }
   .facts dd { margin: 0; }
   .member { display: block; }
   .member + .member { margin-top: 4px; }
-  .member small { margin-left: 14px; font-size: 14px; color: var(--mute); }
-  .about-links { display: flex; gap: 40px; margin-top: 40px; }
-
-  /* Featured */
-  .featured-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: end;
-  }
-  .work-title { margin-top: 32px; }
-  .work-title :global(img) { width: clamp(200px, 26vw, 340px); height: auto; }
-  .status {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    font-family: var(--font-ui);
-    font-size: 13px;
-    letter-spacing: 0.2em;
-    color: var(--mute);
-  }
-  .status span {
-    font-family: var(--font-ui);
-    font-size: 12px;
-    color: var(--ink);
-    border: 1px solid var(--line);
-    padding: 2px 12px;
-    letter-spacing: 0.2em;
-  }
-  .catch { margin-top: 28px; font-family: var(--font-ui); font-size: 19px; letter-spacing: 0.1em; }
-  .synopsis { margin-top: 20px; margin-bottom: 48px; color: var(--ink-soft); font-size: 15px; }
-  .featured-body :global(.progress) { margin-bottom: 48px; }
-
-  /* News */
-  .news { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
-  .news-head h2 { margin-top: 16px; font-size: 24px; letter-spacing: 0.2em; }
+  .member small { margin-left: 14px; font-size: 13px; color: var(--mute); }
+  .about-links { display: flex; gap: 40px; margin-top: 36px; }
+  .news { padding-top: 0; }
   .news .more { margin-top: 32px; }
-
-  /* Follow */
-  .follow { padding-bottom: clamp(96px, 12vw, 160px); }
-  .follow-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-    padding-top: 48px;
-    color: var(--ink-soft);
-  }
 
   @media (max-width: 640px) {
     .hero :global(.hero-image) { object-position: 22% 50%; }
-  }
-  @media (max-width: 820px) {
-    .about, .news, .featured-inner { grid-template-columns: 1fr; gap: 32px; }
-    .featured-inner { gap: 48px; }
   }
   @media (max-width: 560px) {
     .facts > div { grid-template-columns: 1fr; gap: 2px; }

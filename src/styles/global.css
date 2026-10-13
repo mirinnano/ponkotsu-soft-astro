@@ -116,6 +116,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 .section { padding-block: clamp(80px, 10vw, 140px); }
 
+/* 本文の段は一段組みで、読みやすい幅に絞る */
+.narrow { max-width: calc(760px + var(--gutter) * 2); }
+
 /* 雲の虹色を拾った細い区切り線 */
 .rail {
   height: 1px;
