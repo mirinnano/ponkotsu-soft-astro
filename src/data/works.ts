@@ -4,6 +4,7 @@ export type Work = {
   slug: string;
   title: string;
   titleEn: string;
+  reading: string;
   status: string;
   genre: string;
   catchcopy: string;
@@ -17,9 +18,11 @@ export type Work = {
 
 export const works: Work[] = [
   {
-    slug: 'umikaze',
-    title: '海風',
-    titleEn: 'Umikaze',
+    slug: 'hesphoros',
+    title: 'Hesphoros',
+    titleEn: 'Hesphoros',
+    // 宵の明星（Hesperos）と明けの明星（Phosphoros）を一語にした造語
+    reading: 'ヘスフォロス',
     status: '制作中',
     genre: 'Kinetic Novel',
     catchcopy: '十万円と鈍行列車で、日本海まで。',

@@ -38,8 +38,8 @@ PONKOTSU software。白と黒のみ。「ぽんこつ（ちょっと壊れてい
 
 ## 作品ロゴ
 
-`npm run work-logo`（= `node scripts/generate-work-logo.mjs`）で `public/images/works/umikaze-logo[-vertical]-{black,white}.svg` を書き出す。
-題字は Shippori Mincho B1、欧文は Cormorant Garamond。水平線を一本添える（縦組みは「海」と「風」のあいだ、横組みは題字と UMIKAZE のあいだ）。
+`npm run work-logo`（= `node scripts/generate-work-logo.mjs`）で `public/images/works/hesphoros-logo-{black,white}.svg` を書き出す。
+飾りは付けず、小文字の hesphoros を IBM Plex Sans で置くだけ。
 
 ## 本番（Cloudflare）
 
@@ -53,7 +53,7 @@ npx wrangler login
 # ダッシュボードで R2 を有効化してから
 npx wrangler r2 bucket create ponkotsu-downloads
 # wrangler.jsonc の r2_buckets のコメントを外す
-npx wrangler r2 object put ponkotsu-downloads/umikaze/<ファイル名> --file <ローカルのファイル> --remote
+npx wrangler r2 object put ponkotsu-downloads/hesphoros/<ファイル名> --file <ローカルのファイル> --remote
 npx wrangler secret put BETA_ACCESS_CODES
 npx wrangler secret put DOWNLOAD_SIGNING_SECRET
 npx wrangler secret put BETA_FILE_KEY

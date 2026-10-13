@@ -12,6 +12,8 @@ export default defineConfig({
   // 画像はビルド時に最適化（実行時の画像変換は使わない）
   adapter: isPages ? undefined : cloudflare({ imageService: 'compile' }),
   integrations: [sitemap()],
+  // 旧タイトル「海風」の URL から移す
+  redirects: { '/works/umikaze': '/works/hesphoros' },
   env: {
     schema: {
       // クローズドベータ
