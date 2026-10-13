@@ -34,7 +34,7 @@ const latestNews = (await getNews()).slice(0, 3);
     <div class="hero-center">
       <h1 class="hero-badge"><Logo kind="badge-line" tone="black" loading="eager" /></h1>
     </div>
-    <p class="hero-catch">うまく言えないけど、たぶん、しあわせだった。</p>
+    <p class="hero-catch">ことばとしあわせのおはなし</p>
   </section>
 
   <section id="intro" class="container intro reveal">
@@ -196,7 +196,7 @@ const latestNews = (await getNews()).slice(0, 3);
     bottom: clamp(28px, 6vh, 56px);
     font-family: var(--serif-jp);
     font-size: clamp(13px, 1.1vw, 15px);
-    letter-spacing: 0.16em;
+    letter-spacing: 0.32em;
     color: var(--ink);
     animation: rise 2s var(--ease) both 1.4s;
   }
@@ -312,6 +312,6 @@ const latestNews = (await getNews()).slice(0, 3);
     .hero-badge :global(img) { width: 76vw; }
     /* スマホでは人物の顔にかからないよう、空の位置へ */
     .hero-center { justify-content: flex-start; padding-top: 14svh; }
-    .hero-catch { font-size: 12.5px; letter-spacing: 0.1em; }
+    .hero-catch { font-size: 13px; letter-spacing: 0.26em; }
   }
 </style>
