@@ -38,7 +38,7 @@ export const works: Work[] = [
       { term: '舞台', desc: '2001年の秋。横浜から、鈍行で山陰の海まで' },
       { term: '期間', desc: '十四日間' },
       { term: '画面', desc: '背景と文章で進み、立ち絵は大事な場面だけ' },
-      { term: '制作', desc: 'NScripter2' },
+      { term: 'エンジン', desc: '自作のノベルゲームエンジン AriaEngine' },
     ],
     characters: [
       {
