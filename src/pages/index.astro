@@ -31,10 +31,10 @@ const latestNews = (await getNews()).slice(0, 3);
     />
     <div class="hero-veil" aria-hidden="true"></div>
     <div class="hero-light" aria-hidden="true"></div>
-    <div class="hero-sign container">
-      <h1><Logo kind="wordmark" loading="eager" class="hero-name" /></h1>
+    <div class="hero-center">
+      <h1 class="hero-badge"><Logo kind="badge-line" tone="black" loading="eager" /></h1>
+      <p class="hero-catch">少しダークで、切ない物語を。</p>
     </div>
-    <a href="#intro" class="scroll en" aria-label="下へスクロール">Scroll</a>
   </section>
 
   <section id="intro" class="container intro reveal">
@@ -162,45 +162,41 @@ const latestNews = (await getNews()).slice(0, 3);
     60%, 100% { transform: translateX(40%); opacity: 0; }
   }
 
-  /* サークル名は右下に小さく添えるだけ */
-  .hero-sign {
+  /* ロゴは中央に。箱は塗らず枠線だけにして、内側はうっすら曇りガラス越しに空が透ける */
+  .hero-center {
     position: absolute;
-    inset: auto 0 clamp(36px, 6vh, 64px);
+    inset: 0;
     display: flex;
-    justify-content: flex-end;
-    animation: rise 2s var(--ease) both 0.8s;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    padding: 0 var(--gutter) 6vh;
+    animation: rise 2s var(--ease) both 0.6s;
   }
-  .hero-sign :global(.hero-name) { display: block; }
-  .hero-sign :global(.hero-name img) { width: clamp(150px, 15vw, 210px); height: auto; }
-  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-
-  .scroll {
-    position: absolute;
-    left: 50%;
-    bottom: 28px;
-    transform: translateX(-50%);
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    padding-bottom: 52px;
-  }
-  .scroll::after {
+  .hero-badge { position: relative; }
+  .hero-badge::before {
     content: '';
     position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 1px;
-    height: 40px;
-    background: currentColor;
-    animation: line 2.6s var(--ease) infinite;
+    inset: 2px;
+    background: rgb(255 255 255 / 0.16);
+    backdrop-filter: blur(8px) saturate(1.1);
+    -webkit-backdrop-filter: blur(8px) saturate(1.1);
   }
-  @keyframes line {
-    0% { transform: scaleY(0); transform-origin: top; }
-    50% { transform: scaleY(1); transform-origin: top; }
-    51% { transform: scaleY(1); transform-origin: bottom; }
-    100% { transform: scaleY(0); transform-origin: bottom; }
+  .hero-badge :global(img) {
+    position: relative;
+    display: block;
+    width: clamp(260px, 30vw, 440px);
+    height: auto;
   }
+  .hero-catch {
+    font-family: var(--serif-jp);
+    font-size: clamp(14px, 1.3vw, 17px);
+    letter-spacing: 0.24em;
+    color: #1c3a3c;
+    text-shadow: 0 0 14px rgb(255 255 255 / 0.85);
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
   /* Intro：ひと目でわかる紹介 */
   .intro {
@@ -309,7 +305,8 @@ const latestNews = (await getNews()).slice(0, 3);
   }
   @media (max-width: 560px) {
     .facts > div { grid-template-columns: 1fr; gap: 2px; }
-    .hero-sign { justify-content: center; }
-    .scroll { display: none; }
+    .hero-badge :global(img) { width: 76vw; }
+    /* スマホでは人物の顔にかからないよう、空の位置へ */
+    .hero-center { justify-content: flex-start; padding-top: 14svh; }
   }
 </style>

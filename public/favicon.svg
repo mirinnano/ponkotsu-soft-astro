@@ -1,11 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <style>
-    .f{stroke:#1c3a3c}.s{fill:#c9965a}
-    @media (prefers-color-scheme:dark){.f{stroke:#eef7f2}.s{fill:#e0b47c}}
-  </style>
-  <g class="f" fill="none" stroke-linecap="round">
-    <rect x="3" y="7" width="58" height="50" rx="14" stroke-width="4"/>
-    <path d="M3 38.5H61" stroke-width="3"/>
-  </g>
-  <path class="s" d="M31 38.5a10 10 0 0 1 20 0z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="PONKOTSU software">
+<title>PONKOTSU software</title>
+<rect width="64" height="64" rx="12" fill="#000"/>
+<path fill="#fff" d="M8.55 19.46L10.34 27.9L21.07 25.61L27.59 56.3L37.04 54.29L30.52 23.61L41.31 21.31L39.51 12.87L8.55 19.46"/>
 </svg>

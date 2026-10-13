@@ -1,23 +1,25 @@
 ---
+// ロゴ（白黒のみ・文字はパス化済み）。auto は OS のダークモードに合わせて黒/白を切り替える
 import { u } from '../lib/url';
-// アウトライン化済みのロゴ SVG を <img> で表示する。auto はOSのダークモードに追従
+
 interface Props {
-  kind?: 'horizontal' | 'stacked' | 'mark' | 'wordmark';
-  tone?: 'auto' | 'ink' | 'light';
+  // badge は幅 200px 以上、それ未満は badge-small。badge-line は写真やイラストの上に置く枠線だけの版
+  kind?: 'full' | 'compact' | 'badge' | 'badge-small' | 'badge-line';
+  tone?: 'auto' | 'black' | 'white';
   class?: string;
   loading?: 'eager' | 'lazy';
 }
-const { kind = 'horizontal', tone = 'auto', class: className, loading = 'lazy' } = Astro.props;
-const size = { horizontal: [268, 64], stacked: [360, 272], mark: [64, 64], wordmark: [520, 140] }[kind];
-const src = (t: 'ink' | 'light') => u(`/images/logo/${kind === 'mark' || kind === 'wordmark' ? kind : `logo-${kind}`}-${t}.svg`);
-const alt = 'ぽんこつソフト PONKOTU SOFTWARE';
+const { kind = 'full', tone = 'auto', class: className, loading = 'lazy' } = Astro.props;
+const size = { full: [568, 108], compact: [568, 70], badge: [624, 146], 'badge-small': [624, 146], 'badge-line': [624, 146] }[kind];
+const src = (t: 'black' | 'white') => u(`/images/logo/logo-${kind === 'full' ? '' : `${kind}-`}${t}.svg`);
+const alt = 'PONKOTSU software（ぽんこつソフト）';
 ---
 
 {
   tone === 'auto' ? (
     <picture class={className}>
-      <source srcset={src('light')} media="(prefers-color-scheme: dark)" />
-      <img src={src('ink')} alt={alt} width={size[0]} height={size[1]} loading={loading} decoding="async" />
+      <source srcset={src('white')} media="(prefers-color-scheme: dark)" />
+      <img src={src('black')} alt={alt} width={size[0]} height={size[1]} loading={loading} decoding="async" />
     </picture>
   ) : (
     <img class={className} src={src(tone)} alt={alt} width={size[0]} height={size[1]} loading={loading} decoding="async" />

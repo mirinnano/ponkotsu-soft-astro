@@ -22,14 +22,16 @@ npm run build
 
 ## ロゴ
 
-`public/images/logo/` の SVG はすべて文字をパス化済み（フォント非依存）。
+PONKOTSU software。白と黒のみ。「ぽんこつ（ちょっと壊れている）」を、T が少し傾くことだけで表した文字ロゴ。
+`npm run logo`（= `node scripts/generate-logo.mjs`）で `public/images/logo/` と `public/favicon.svg` を書き出す。文字はすべてパス化済み。
 
 | ファイル | 用途 |
 | --- | --- |
-| `logo-horizontal-{ink,light}.svg` | ヘッダー |
-| `logo-stacked-{ink,light}.svg` | フッター・About |
-| `wordmark-{ink,light}.svg` | トップのサークル名 |
-| `mark-{ink,light}.svg` / `public/favicon.svg` | シンボル・ファビコン |
+| `logo-badge-line-{black,white}.svg` | 写真・イラストの上（トップ）。箱は塗らず枠線だけ |
+| `logo-badge-{black,white}.svg` | 箱入り。幅 200px 以上で使う（フッターなど） |
+| `logo-badge-small-{black,white}.svg` | 箱入りの内枠なし版。幅 200px 未満用 |
+| `logo-{black,white}.svg` | 箱なし。PONKOTSU + software |
+| `logo-compact-{black,white}.svg` | PONKOTSU のみ。ヘッダーなど小さい場所 |
 
 ## 環境変数（Vercel の Project Settings で設定）
 

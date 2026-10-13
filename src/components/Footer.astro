@@ -11,16 +11,12 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="top">
       <a href={u('/')} class="logo" aria-label={site.name}>
-        <Logo kind="stacked" tone="light" />
+        <Logo kind="badge" tone="white" />
       </a>
-      <div class="cols">
-        <ul>
-          {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-        </ul>
-        <ul>
-          <li><a href={site.twitterUrl} target="_blank" rel="noopener">X (Twitter) ↗</a></li>
-        </ul>
-      </div>
+      <ul class="links">
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        <li><a href={site.twitterUrl} target="_blank" rel="noopener">X (Twitter) ↗</a></li>
+      </ul>
     </div>
     <p class="tagline">{site.tagline}</p>
     <hr class="rail" />
@@ -37,10 +33,11 @@ const year = new Date().getFullYear();
     gap: 48px;
     flex-wrap: wrap;
   }
-  .logo { display: block; width: min(220px, 60vw); opacity: 0.92; transition: opacity 0.3s; }
+  .logo { display: block; width: min(240px, 60vw); }
+  .logo :global(img) { width: 100%; height: auto; }
   .logo:hover { opacity: 1; }
-  .cols { display: flex; gap: 72px; }
-  .cols a {
+  .links { display: grid; grid-template-columns: repeat(2, auto); gap: 0 56px; }
+  .links a {
     font-family: var(--serif-en);
     font-size: 15px;
     letter-spacing: 0.14em;
@@ -48,7 +45,7 @@ const year = new Date().getFullYear();
     line-height: 2.3;
     transition: color 0.3s;
   }
-  .cols a:hover { color: var(--ink); }
+  .links a:hover { color: var(--ink); }
   .tagline {
     margin-top: 72px;
     margin-bottom: 28px;
@@ -58,6 +55,5 @@ const year = new Date().getFullYear();
   }
   .copy { margin-top: 24px; font-size: 12px; color: var(--mute); }
   @media (max-width: 560px) {
-    .cols { gap: 40px; }
-  }
+    }
 </style>

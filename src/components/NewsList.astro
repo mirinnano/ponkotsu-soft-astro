@@ -2,8 +2,13 @@
 import { render } from 'astro:content';
 import { formatDate, isoDate, newsHref, type getNews } from '../lib/content';
 
-interface Props { items: Awaited<ReturnType<typeof getNews>> }
-const { items } = Astro.props;
+interface Props {
+  items: Awaited<ReturnType<typeof getNews>>;
+  // 一覧ページの直下に置くときは 2、セクション見出しの下に置くときは 3
+  level?: 2 | 3;
+}
+const { items, level = 3 } = Astro.props;
+const H = `h${level}` as const;
 const rows = await Promise.all(items.map(async (e) => ({ e, href: newsHref(e), Content: (await render(e)).Content })));
 ---
 
@@ -16,7 +21,7 @@ const rows = await Promise.all(items.map(async (e) => ({ e, href: newsHref(e), C
           {e.data.category === 'press' && <span class="tag en">Press</span>}
         </p>
         <div>
-          <h3>{href ? <a href={href}>{e.data.title}</a> : e.data.title}</h3>
+          <H class="title">{href ? <a href={href}>{e.data.title}</a> : e.data.title}</H>
           <div class="body">
             {e.data.category === 'press' ? <p>{e.data.summary}</p> : <Content />}
           </div>
@@ -38,9 +43,9 @@ const rows = await Promise.all(items.map(async (e) => ({ e, href: newsHref(e), C
   .meta { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   time { font-size: 16px; color: var(--mute); letter-spacing: 0.1em; line-height: 1.9; }
   .tag { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; border: 1px solid var(--line); padding: 0 10px; color: var(--ink-soft); }
-  h3 { font-size: 16px; letter-spacing: 0.1em; margin-bottom: 8px; }
-  h3 a { border-bottom: 1px solid var(--line); transition: border-color 0.3s; }
-  h3 a:hover { border-color: var(--ink); }
+  .title { font-size: 16px; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .title a { border-bottom: 1px solid var(--line); transition: border-color 0.3s; }
+  .title a:hover { border-color: var(--ink); }
   .body { font-size: 15px; color: var(--ink-soft); }
   .body :global(p + p) { margin-top: 0.8em; }
   .body :global(a) { border-bottom: 1px solid var(--line); }

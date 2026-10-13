@@ -19,8 +19,8 @@ const isCurrent = (href: string) => {
 <header class="site-header" data-over-hero={overHero}>
   <div class="inner">
     <a href={u('/')} class="brand" aria-label={`${site.name} ホーム`}>
-      <Logo kind="horizontal" loading="eager" class="logo-default" />
-      {overHero && <Logo kind="horizontal" tone={overHero === 'light' ? 'ink' : 'light'} loading="eager" class="logo-hero" />}
+      <Logo kind="compact" loading="eager" class="logo-default" />
+      {overHero && <Logo kind="compact" tone={overHero === 'light' ? 'black' : 'white'} loading="eager" class="logo-hero" />}
     </a>
 
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -87,7 +87,7 @@ const isCurrent = (href: string) => {
     position: relative;
     z-index: 2;
   }
-  .brand :global(img) { height: 38px; width: auto; }
+  .brand :global(img) { height: 20px; width: auto; }
   .brand :global(.logo-hero) { display: none; }
 
   /* ヒーローの上では背景に合わせて固定色で表示（OSのダークモードに左右されない） */
@@ -111,13 +111,14 @@ const isCurrent = (href: string) => {
     letter-spacing: 0.14em;
     color: var(--ink-soft);
     position: relative;
-    padding-block: 4px;
+    display: inline-block;
+    padding-block: 10px;
     transition: color 0.3s;
   }
   .nav a::after {
     content: '';
     position: absolute;
-    left: 0; right: 0; bottom: 0;
+    left: 0; right: 0; bottom: 6px;
     height: 1px;
     background: currentColor;
     transform: scaleX(0);
@@ -154,7 +155,7 @@ const isCurrent = (href: string) => {
   .is-open .bar:nth-of-type(2) { transform: translateY(-3.5px) rotate(-20deg); }
 
   @media (max-width: 720px) {
-    .brand :global(img) { height: 32px; }
+    .brand :global(img) { height: 17px; }
     .menu-toggle { display: block; }
     .nav {
       position: fixed;

@@ -11,7 +11,7 @@ const items = await getNews('press');
 <Base title="Press" description="ぽんこつソフトのプレスリリース。">
   <PageHeader label="Press" title="プレスリリース" lead={`取材・掲載のご相談は、Contact ページまたは X（@${site.twitter}）までご連絡ください。`} />
   <section class="container list">
-    {items.length ? <NewsList items={items} /> : <p class="empty">現在公開中のプレスリリースはありません。</p>}
+    {items.length ? <NewsList items={items} level={2} /> : <p class="empty">現在公開中のプレスリリースはありません。</p>}
   </section>
 </Base>
 

@@ -1,8 +1,9 @@
 ---
+import { u } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { site } from '../data/site';
-import Logo from '../components/Logo.astro';
+import { members } from '../data/members';
 
 const facts = [
   { term: 'サークル名', desc: site.name },
@@ -12,7 +13,7 @@ const facts = [
 ];
 ---
 
-<Base title="About" description="ぽんこつソフトについて。少しダークで切ない純文学風ビジュアルノベルを制作するサークルです。">
+<Base title="About" description="ぽんこつソフトについて。サークル概要、メンバー、二次創作ガイドライン。">
   <PageHeader label="About" title="ぽんこつソフトについて" />
 
   <section class="container about">
@@ -37,9 +38,50 @@ const facts = [
     </dl>
   </section>
 
-  <section class="container logo-block reveal">
-    <hr class="rail" />
-    <Logo kind="stacked" class="about-logo" />
+  <section class="container block" id="members">
+    <p class="label reveal">Members</p>
+    <div class="reveal">
+      <h2>メンバー</h2>
+      <ul class="members">
+        {
+          members.map((m) => (
+            <li>
+              <p class="m-name">{m.name}</p>
+              <p class="m-roles en">{m.roles.join(' / ')}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="container block" id="guideline">
+    <p class="label reveal">Guideline</p>
+    <div class="reveal guideline">
+      <h2>二次創作ガイドライン</h2>
+      <dl>
+        <div>
+          <dt>許諾範囲</dt>
+          <dd>当サークルの作品に関する二次創作（イラスト、小説、動画等）は、非営利かつ個人利用の範囲で自由に作成・公開していただけます。</dd>
+        </div>
+        <div>
+          <dt>禁止事項</dt>
+          <dd>
+            <ul>
+              <li>商業利用</li>
+              <li>著作権侵害を伴う行為</li>
+              <li>公序良俗に反する内容</li>
+              <li>当サークルまたは作品の名誉を傷つける内容</li>
+            </ul>
+          </dd>
+        </div>
+        <div>
+          <dt>クレジット表記</dt>
+          <dd>二次創作作品を公開する際は、作品タイトルと当サークル名を明記してください。</dd>
+        </div>
+      </dl>
+      <p class="ask">ご不明な点は <a href={u('/contact')}>お問い合わせ</a> からどうぞ。</p>
+    </div>
   </section>
 </Base>
 
@@ -54,12 +96,21 @@ const facts = [
   .statement p + p { margin-top: 2em; }
   .facts > div { padding-block: 22px; border-top: 1px solid var(--line); }
   .facts > div:last-child { border-bottom: 1px solid var(--line); }
-  dt { font-size: 12px; letter-spacing: 0.2em; color: var(--mute); }
+  dt { font-size: 13px; letter-spacing: 0.14em; color: var(--mute); }
   dd { margin: 6px 0 0; font-size: 15px; }
-  .logo-block { padding-bottom: clamp(96px, 12vw, 160px); }
-  .logo-block :global(.about-logo) { display: block; width: min(300px, 70%); margin: clamp(72px, 10vw, 120px) auto 0; }
-  .logo-block :global(.about-logo img) { width: 100%; height: auto; }
+  .block { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; padding-bottom: clamp(80px, 10vw, 140px); }
+  h2 { font-size: 22px; letter-spacing: 0.2em; margin-bottom: 32px; }
+  .members li { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; padding-block: 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .m-name { font-family: var(--serif-jp); font-size: 18px; letter-spacing: 0.14em; }
+  .m-roles { font-style: italic; color: var(--mute); }
+  .guideline dl > div { padding-block: 22px; border-top: 1px solid var(--line); }
+  .guideline dl > div:last-child { border-bottom: 1px solid var(--line); }
+  .guideline dd { max-width: 34em; }
+  .guideline dd li::before { content: '—'; margin-right: 0.8em; color: var(--mute); }
+  .ask { margin-top: 28px; color: var(--ink-soft); }
+  .ask a { border-bottom: 1px solid currentColor; }
+
   @media (max-width: 820px) {
-    .about { grid-template-columns: 1fr; }
+    .about, .block { grid-template-columns: 1fr; gap: 24px; }
   }
 </style>

@@ -4,51 +4,29 @@ import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import AjaxForm from '../components/AjaxForm.astro';
 import { site } from '../data/site';
+import { isStaticPreview } from '../lib/env';
 ---
 
-<Base title="Contact" description="ぽんこつソフトへのお問い合わせ、二次創作ガイドライン。">
+<Base title="Contact" description="ぽんこつソフトへのお問い合わせ。">
   <PageHeader label="Contact" title="お問い合わせ" />
 
-  <section class="container block">
-    <p class="label reveal">Guideline</p>
-    <div class="reveal guideline">
-      <h2>二次創作ガイドライン</h2>
-      <dl>
-        <div>
-          <dt>許諾範囲</dt>
-          <dd>当サークルの作品に関する二次創作（イラスト、小説、動画等）は、非営利かつ個人利用の範囲で自由に作成・公開していただけます。</dd>
-        </div>
-        <div>
-          <dt>禁止事項</dt>
-          <dd>
-            <ul>
-              <li>商業利用</li>
-              <li>著作権侵害を伴う行為</li>
-              <li>公序良俗に反する内容</li>
-              <li>当サークルまたは作品の名誉を傷つける内容</li>
-            </ul>
-          </dd>
-        </div>
-        <div>
-          <dt>クレジット表記</dt>
-          <dd>二次創作作品を公開する際は、作品タイトルと当サークル名を明記してください。</dd>
-        </div>
-      </dl>
-    </div>
-  </section>
-
-  <section class="container block section">
+  <section class="container block form-section">
     <p class="label reveal">Form</p>
     <div class="reveal">
       <h2>お問い合わせフォーム</h2>
-      <p class="note">ガイドラインに関する不明点やご感想などは、こちらからお送りください。</p>
+      <p class="note">
+        ご感想・ご質問・取材のご相談などはこちらからお送りください。二次創作については <a href={u('/about#guideline')}>ガイドライン</a> をご覧ください。
+      </p>
+      {isStaticPreview ? (
+        <p class="notice">このプレビュー版ではフォームを送信できません。X の DM からご連絡ください。</p>
+      ) : (
       <form action={u('/api/contact')} method="post" class="form" data-ajax-form data-success="送信しました。お問い合わせありがとうございます。">
         <label>
-          <span>お名前</span>
+          <span>お名前<em>必須</em></span>
           <input name="name" type="text" autocomplete="name" required maxlength="100" />
         </label>
         <label>
-          <span>メールアドレス</span>
+          <span>メールアドレス<em>必須</em></span>
           <input name="email" type="email" autocomplete="email" required maxlength="200" />
         </label>
         <label>
@@ -56,7 +34,7 @@ import { site } from '../data/site';
           <input name="subject" type="text" maxlength="200" />
         </label>
         <label>
-          <span>メッセージ</span>
+          <span>メッセージ<em>必須</em></span>
           <textarea name="message" rows="6" required maxlength="4000"></textarea>
         </label>
         <label class="hp" aria-hidden="true">
@@ -64,10 +42,11 @@ import { site } from '../data/site';
           <input name="website" type="text" tabindex="-1" autocomplete="off" />
         </label>
         <div class="submit-row">
-          <button type="submit" class="link-arrow">Send</button>
+          <button type="submit" class="link-arrow">送信する</button>
           <p class="status-msg" data-status aria-live="polite"></p>
         </div>
       </form>
+      )}
     </div>
   </section>
 
@@ -84,16 +63,15 @@ import { site } from '../data/site';
 <style>
   .block { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
   h2 { font-size: 22px; letter-spacing: 0.2em; margin-bottom: 36px; }
-  .guideline dl > div { padding-block: 24px; border-top: 1px solid var(--line); }
-  .guideline dl > div:last-child { border-bottom: 1px solid var(--line); }
-  dt { font-size: 12px; letter-spacing: 0.2em; color: var(--mute); }
-  dd { margin: 8px 0 0; max-width: 34em; }
-  dd li::before { content: '—'; margin-right: 0.8em; color: var(--mute); }
 
+  .form-section { padding-bottom: clamp(56px, 7vw, 96px); }
   .note { color: var(--ink-soft); margin-bottom: 40px; }
+  .note a { border-bottom: 1px solid currentColor; }
+  .notice { padding: 20px 24px; border: 1px solid var(--line); background: var(--paper-2); }
   .form { display: grid; gap: 28px; max-width: 560px; }
   .form label { display: grid; gap: 4px; }
-  .form label span { font-size: 12px; letter-spacing: 0.2em; color: var(--mute); }
+  .form label span { font-size: 13px; letter-spacing: 0.12em; color: var(--ink-soft); }
+  .form label em { font-style: normal; font-size: 11px; margin-left: 10px; padding: 1px 6px; border: 1px solid var(--line); color: var(--mute); letter-spacing: 0.1em; }
   .form input, .form textarea {
     font: inherit;
     font-size: 15px;
@@ -115,7 +93,9 @@ import { site } from '../data/site';
     border-bottom: 1px solid currentColor;
     color: var(--ink);
     cursor: pointer;
-    padding: 0 0 6px;
+    font-family: var(--sans-jp);
+    font-size: 15px;
+    padding: 10px 0 6px;
   }
   .submit-row button:disabled { opacity: 0.4; }
   .status-msg { font-size: 13px; color: var(--ink-soft); }
