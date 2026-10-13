@@ -23,13 +23,6 @@ const share = [
 <Base overHero="dark" title={work.title} description={`${work.catchcopy}。${work.synopsis.slice(0, 2).join('')}`}>
   <section class="night hero">
     <div class="container hero-inner">
-      <div class="ticket" aria-label={`乗車券 ${work.ticket.from}から${work.ticket.to}まで`}>
-        <p class="t-head"><span>乗車券</span><span class="t-no">No. 0921</span></p>
-        <p class="t-route"><span>{work.ticket.from}</span><span class="t-arrow">→</span><span>{work.ticket.to}</span></p>
-        <p class="t-via">経由：{work.ticket.via}</p>
-        <p class="t-date">{work.ticket.date}から <b>{work.ticket.days}</b>日間有効</p>
-        <p class="t-foot">下車前途無効</p>
-      </div>
       <div class="hero-text">
         <p class="meta"><span class="status">{work.status}</span><span class="en">{work.genre}</span><span class="en">{work.titleEn}</span></p>
         <p class="catch">{work.catchcopy}</p>
@@ -157,28 +150,6 @@ const share = [
     line-height: 1;
     animation: fade 2.4s var(--ease) both 0.2s;
   }
-  /* 乗車券。色は付けず、細い線と文字だけで置く */
-  .ticket {
-    grid-column: 1;
-    grid-row: 1;
-    align-self: end;
-    justify-self: start;
-    width: min(300px, 100%);
-    padding: 14px 18px 12px;
-    color: var(--ink-soft);
-    border: 1px solid var(--line);
-    font-family: 'IBM Plex Mono', var(--font-ui);
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    animation: fade 2s var(--ease) both 0.5s;
-  }
-  .ticket p { line-height: 1.6; }
-  .t-head { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
-  .t-head span:first-child { font-family: var(--font-ui); letter-spacing: 0.3em; }
-  .t-route { display: flex; align-items: center; gap: 12px; margin-top: 8px; font-family: var(--font-mincho); font-size: 22px; letter-spacing: 0.14em; color: var(--ink); }
-  .t-arrow { font-size: 14px; color: var(--mute); }
-  .t-date b { font-weight: 500; color: var(--ink); }
-  .t-foot { margin-top: 6px; font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.2em; text-align: right; color: var(--mute); }
   .hero-text { grid-column: 1; grid-row: 2; align-self: end; animation: fade 2s var(--ease) both 0.9s; }
   .meta { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--mute); }
   .status { border: 1px solid var(--line); padding: 1px 12px; color: var(--ink); font-size: 12px; letter-spacing: 0.2em; }
@@ -289,8 +260,5 @@ const share = [
   @media (max-width: 560px) {
     .hero-inner { grid-template-columns: 1fr; }
     .title { grid-column: 1; grid-row: 1; justify-self: end; font-size: 96px; }
-    .hero-inner { grid-template-rows: auto auto auto; }
-    .ticket { grid-row: 2; width: 100%; max-width: 300px; }
-    .hero-text { grid-row: 3; }
   }
 </style>
