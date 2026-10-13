@@ -9,7 +9,6 @@ import { site } from '../data/site';
 import NewsList from '../components/NewsList.astro';
 import { getNews } from '../lib/content';
 import { works } from '../data/works';
-import { members } from '../data/members';
 
 const featured = works[0];
 const latestNews = (await getNews()).slice(0, 3);
@@ -60,14 +59,6 @@ const latestNews = (await getNews()).slice(0, 3);
     <dl class="facts">
       <div><dt>設立</dt><dd>{site.founded}年</dd></div>
       <div><dt>活動</dt><dd>ビジュアルノベル（キネティックノベル）の企画・制作</dd></div>
-      <div>
-        <dt>メンバー</dt>
-        <dd>
-          {members.map((m) => (
-            <span class="member">{m.name}<small class="en">{m.roles.join(' / ')}</small></span>
-          ))}
-        </dd>
-      </div>
     </dl>
     <p class="about-links">
       <a href={u('/about')} class="link-arrow">About us</a>
@@ -198,9 +189,6 @@ const latestNews = (await getNews()).slice(0, 3);
   .facts > div:last-child { border-bottom: 1px solid var(--line); }
   .facts dt { font-size: 13px; color: var(--mute); letter-spacing: 0.14em; }
   .facts dd { margin: 0; }
-  .member { display: block; }
-  .member + .member { margin-top: 4px; }
-  .member small { margin-left: 14px; font-size: 13px; color: var(--mute); }
   .about-links { display: flex; gap: 40px; margin-top: 36px; }
   .news { padding-top: 0; }
   .news .more { margin-top: 32px; }

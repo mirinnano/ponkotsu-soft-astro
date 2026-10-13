@@ -3,17 +3,22 @@ import { u } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { site } from '../data/site';
-import { members } from '../data/members';
+import { getNews, formatDate } from '../lib/content';
 
 const facts = [
   { term: 'サークル名', desc: site.name },
   { term: '設立', desc: `${site.founded}年` },
   { term: '活動内容', desc: 'ビジュアルノベル（キネティックノベル）の企画・制作' },
   { term: '制作中', desc: 'HesPhoros（ヘスフォロス）' },
+  { term: '制作環境', desc: '自作のノベルゲームエンジン AriaEngine' },
+  { term: '連絡先', desc: 'X（@ponkotusoft）、お問い合わせフォーム' },
 ];
+
+// 沿革はお知らせから（古い順）
+const history = (await getNews()).slice().reverse();
 ---
 
-<Base title="About" description="ぽんこつソフトのサークル概要、メンバー、二次創作ガイドライン。">
+<Base title="About" description="ぽんこつソフトのサークル概要、沿革、二次創作ガイドライン。">
   <PageHeader label="About" title="ぽんこつソフトについて" />
 
   <section class="container narrow about">
@@ -38,19 +43,19 @@ const facts = [
     </dl>
   </section>
 
-  <section class="container narrow block" id="members">
+  <section class="container narrow block" id="history">
     <div class="reveal">
-      <h2>メンバー</h2>
-      <ul class="members">
+      <h2>沿革</h2>
+      <ol class="history">
         {
-          members.map((m) => (
+          history.map((h) => (
             <li>
-              <p class="m-name">{m.name}</p>
-              <p class="m-roles en">{m.roles.join(' / ')}</p>
+              <time class="en" datetime={h.data.date.toISOString().slice(0, 10)}>{formatDate(h.data.date)}</time>
+              <span>{h.data.title}</span>
             </li>
           ))
         }
-      </ul>
+      </ol>
     </div>
   </section>
 
@@ -94,10 +99,9 @@ const facts = [
   dd { margin: 6px 0 0; font-size: 15px; }
   .block { padding-bottom: clamp(80px, 10vw, 140px); }
   h2 { font-size: 22px; letter-spacing: 0.2em; margin-bottom: 32px; }
-  .members li { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; padding-block: 18px; border-top: 1px solid var(--line); }
-  .members li:last-child { border-bottom: 1px solid var(--line); }
-  .m-name { font-family: var(--font-ui); font-size: 18px; letter-spacing: 0.14em; }
-  .m-roles { color: var(--mute); }
+  .history li { display: grid; grid-template-columns: 120px 1fr; gap: 24px; padding-block: 14px; border-top: 1px solid var(--line); }
+  .history li:last-child { border-bottom: 1px solid var(--line); }
+  .history time { color: var(--mute); letter-spacing: 0.08em; }
   .guideline dl > div { padding-block: 22px; border-top: 1px solid var(--line); }
   .guideline dl > div:last-child { border-bottom: 1px solid var(--line); }
   .guideline dd { max-width: 34em; }

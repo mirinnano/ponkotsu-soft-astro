@@ -68,4 +68,6 @@ npm run build && npx wrangler deploy
 
 ## 環境変数
 
+フォーム（ベータ認証・お問い合わせ）は、Secrets を登録したうえで `PUBLIC_FORMS_ENABLED=1` を付けてビルドしたときだけ表示する（例：`PUBLIC_FORMS_ENABLED=1 npm run build && npx wrangler deploy`）。それまでは X の DM への案内を出す。
+
 `.dev.vars.example` を参照。未設定の間、ベータ認証とフォームは「停止中／準備中」を返す。

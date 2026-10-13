@@ -3,7 +3,7 @@ import WorkLogo from '../../components/WorkLogo.astro';
 import { u } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import AjaxForm from '../../components/AjaxForm.astro';
-import { isStaticPreview } from '../../lib/env';
+import { formsEnabled } from '../../lib/env';
 import { works, type Work } from '../../data/works';
 
 export function getStaticPaths() {
@@ -76,8 +76,8 @@ const share = [
         <div class="container narrow section reveal">
           <h2>クローズドベータテスト</h2>
           <p class="note">現在クローズドベータテスト中です。テスターの方は、以下にアクセスコードを入力してください。</p>
-          {isStaticPreview ? (
-            <p class="notice">このプレビュー版では認証できません。テスターの方には X の DM でご案内しています。</p>
+          {!formsEnabled ? (
+            <p class="notice">ダウンロードの受付は準備中です。テスターの方には X の DM でご案内しています。</p>
           ) : (
           <form action={u('/api/beta')} method="post" class="beta-form" data-ajax-form>
             <label class="visually-hidden" for="token">アクセスコード</label>
