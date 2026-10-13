@@ -23,9 +23,15 @@ const share = [
 <Base overHero="dark" title={work.title} description={`${work.catchcopy}。${work.synopsis.slice(0, 2).join('')}`}>
   <section class="night hero">
     <div class="container hero-inner">
+      <div class="ticket" aria-label={`乗車券 ${work.ticket.from}から${work.ticket.to}まで`}>
+        <p class="t-head"><span>乗車券</span><span class="t-no">No. 0921</span></p>
+        <p class="t-route"><span>{work.ticket.from}</span><span class="t-arrow">→</span><span>{work.ticket.to}</span></p>
+        <p class="t-via">経由：{work.ticket.via}</p>
+        <p class="t-date">{work.ticket.date}から <b>{work.ticket.days}</b>日間有効</p>
+        <p class="t-foot">下車前途無効</p>
+      </div>
       <div class="hero-text">
         <p class="meta"><span class="status">{work.status}</span><span class="en">{work.genre}</span><span class="en">{work.titleEn}</span></p>
-        <p class="setting">{work.setting}</p>
         <p class="catch">{work.catchcopy}</p>
       </div>
       <h1 class="title">{work.title}</h1>
@@ -36,7 +42,10 @@ const share = [
     <p class="label reveal">Story</p>
     <div class="story reveal">
       <h2>あらすじ</h2>
-      {work.synopsis.map((p) => <p class="prose">{p}</p>)}
+      <div class="story-body">
+        {work.synopsis.map((p) => <p>{p}</p>)}
+        <span class="wait" aria-hidden="true">▼</span>
+      </div>
     </div>
   </section>
 
@@ -148,6 +157,28 @@ const share = [
     line-height: 1;
     animation: fade 2.4s var(--ease) both 0.2s;
   }
+  /* 乗車券。色は付けず、細い線と文字だけで置く */
+  .ticket {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: end;
+    justify-self: start;
+    width: min(300px, 100%);
+    padding: 14px 18px 12px;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    font-family: 'IBM Plex Mono', var(--font-ui);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    animation: fade 2s var(--ease) both 0.5s;
+  }
+  .ticket p { line-height: 1.6; }
+  .t-head { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .t-head span:first-child { font-family: var(--font-ui); letter-spacing: 0.3em; }
+  .t-route { display: flex; align-items: center; gap: 12px; margin-top: 8px; font-family: var(--font-mincho); font-size: 22px; letter-spacing: 0.14em; color: var(--ink); }
+  .t-arrow { font-size: 14px; color: var(--mute); }
+  .t-date b { font-weight: 500; color: var(--ink); }
+  .t-foot { margin-top: 6px; font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.2em; text-align: right; color: var(--mute); }
   .hero-text { grid-column: 1; grid-row: 2; align-self: end; animation: fade 2s var(--ease) both 0.9s; }
   .meta { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--mute); }
   .status { border: 1px solid var(--line); padding: 1px 12px; color: var(--ink); font-size: 12px; letter-spacing: 0.2em; }
@@ -156,8 +187,37 @@ const share = [
 
   .block { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
   h2 { font-size: 22px; letter-spacing: 0.2em; margin-bottom: 36px; }
-  .story p { max-width: 34em; }
-  .story p + p { margin-top: 1.4em; }
+  /* あらすじは小説の頁のように明朝で。広い画面では縦書き。最後に、ノベルゲームの頁送りの ▼ だけを置く */
+  .story-body {
+    font-family: var(--font-mincho);
+    font-size: 16px;
+    line-height: 2.1;
+    letter-spacing: 0.08em;
+  }
+  .story-body p { max-width: 34em; }
+  .story-body p + p { margin-top: 1.2em; }
+  .wait {
+    display: inline-block;
+    margin-top: 0.6em;
+    font-size: 11px;
+    color: var(--mute);
+    animation: wait 1.4s steps(2, jump-none) infinite;
+  }
+  @keyframes wait { 50% { opacity: 0; } }
+  @media (min-width: 900px) {
+    .story-body {
+      writing-mode: vertical-rl;
+      height: 26em;
+      max-width: 100%;
+      overflow-x: auto;
+      margin-left: auto;
+      font-size: 17px;
+      line-height: 2.2;
+    }
+    .story-body p { max-width: none; }
+    .story-body p + p { margin-top: 0; margin-right: 1.6em; }
+    .wait { margin-top: 0; margin-right: 1em; align-self: flex-end; }
+  }
 
   .setting { margin-top: 10px; font-size: 13px; color: var(--mute); letter-spacing: 0.12em; }
   .specs-section { padding-bottom: clamp(80px, 10vw, 140px); }
@@ -229,5 +289,8 @@ const share = [
   @media (max-width: 560px) {
     .hero-inner { grid-template-columns: 1fr; }
     .title { grid-column: 1; grid-row: 1; justify-self: end; font-size: 96px; }
+    .hero-inner { grid-template-rows: auto auto auto; }
+    .ticket { grid-row: 2; width: 100%; max-width: 300px; }
+    .hero-text { grid-row: 3; }
   }
 </style>

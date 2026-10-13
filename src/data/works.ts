@@ -11,6 +11,7 @@ export type Work = {
   progress: { label: string; value: number }[];
   characters: Character[];
   specs: Spec[];
+  ticket: { from: string; to: string; via: string; date: string; days: number };
   setting: string;
   betaOpen: boolean;
 };
@@ -31,7 +32,14 @@ export const works: Work[] = [
       'ミオは灰皿から少し離れて、時刻表を見ていた。薄手のスカートで、寒い、と言った。薬は、もう飲まないらしい。',
       'ドアの前で、一度だけ足が止まる。今なら、まだ戻れる。',
       '発車ベルが鳴った。',
+      '三ノ宮のユニクロで安い服を買って、丸めた制服は紙袋の底へ押し込んだ。',
+      '嵐で動けない日は、ミオが差し出した『銀河鉄道の夜』を読んだ。尾道では駅の夜間待合室の硬いベンチで夜を明かし、ミオがパピコを二つに割った。',
+      '財布の中身は、減る一方だった。',
+      '直島では自転車を借りて、やっと見つけた砂浜まで漕いだ。',
+      '波の音がしていた。',
     ],
+    // ページ上部の切符（乗車券）に載せる文字
+    ticket: { from: '横浜', to: '山陰', via: '各駅停車', date: '2001年 9月21日', days: 14 },
     progress: [{ label: 'シナリオ・スクリプト', value: 25 }],
     specs: [
       { term: '形式', desc: 'キネティックノベル（選択肢なし）' },
