@@ -12,10 +12,6 @@ import { works, totalProgress } from '../../data/works';
     {
       works.map((w) => (
         <a href={u(`/works/${w.slug}`)} class="work reveal">
-          <div class="cover night" aria-hidden="true">
-            <span class="cover-title">{w.title}</span>
-            <span class="cover-en en">{w.titleEn}</span>
-          </div>
           <div class="body">
             <p class="meta">
               <span class="status">{w.status}</span>
@@ -23,6 +19,7 @@ import { works, totalProgress } from '../../data/works';
             </p>
             <h2>{w.title}</h2>
             <p class="catch">{w.catchcopy}</p>
+            <p class="setting">{w.setting}</p>
             <p class="synopsis">{w.synopsis.slice(0, 2).join('')}</p>
             <p class="foot">
               <span class="en">Progress — {totalProgress(w)}%</span>
@@ -37,59 +34,19 @@ import { works, totalProgress } from '../../data/works';
 
 <style>
   .list { padding-bottom: clamp(96px, 12vw, 160px); }
+  .body { max-width: 760px; }
   .work {
     display: grid;
-    grid-template-columns: 5fr 6fr;
-    gap: clamp(32px, 6vw, 80px);
-    align-items: center;
+    grid-template-columns: 1fr;
     padding-block: 56px;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
-  .cover {
-    aspect-ratio: 4 / 5;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 32px;
-    overflow: hidden;
-    transition: transform 1s var(--ease);
-  }
-  /* 夜の海：水平線と月 */
-  .cover::before {
-    content: '';
-    position: absolute;
-    inset: 64% 0 0;
-    border-top: 1px solid var(--line);
-    background: linear-gradient(rgb(255 255 255 / 0.03), transparent);
-  }
-  .cover::after {
-    content: '';
-    position: absolute;
-    left: 22%;
-    bottom: 36%;
-    width: 14%;
-    aspect-ratio: 2 / 1;
-    border-radius: 999px 999px 0 0;
-    background: var(--sun);
-    opacity: 0.85;
-  }
-  .work:hover .cover { transform: scale(0.985); }
-  .cover-title {
-    position: absolute;
-    top: 32px;
-    right: 28px;
-    writing-mode: vertical-rl;
-    font-family: var(--font-mincho);
-    font-size: clamp(48px, 6vw, 72px);
-    letter-spacing: 0.2em;
-  }
-  .cover-en { position: relative; font-size: 18px; color: var(--mute); }
   .meta { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--mute); }
   .status { border: 1px solid var(--line); padding: 1px 12px; color: var(--ink); font-size: 12px; letter-spacing: 0.2em; }
-  h2 { margin-top: 24px; font-family: var(--font-mincho); font-size: 34px; letter-spacing: 0.16em; }
+  h2 { margin-top: 20px; font-family: var(--font-mincho); font-size: clamp(40px, 6vw, 64px); line-height: 1.2; letter-spacing: 0.16em; }
   .catch { margin-top: 12px; font-family: var(--font-ui); font-size: 17px; letter-spacing: 0.08em; }
+  .setting { margin-top: 6px; font-size: 13px; color: var(--mute); letter-spacing: 0.12em; }
   .synopsis { margin-top: 24px; font-size: 15px; color: var(--ink-soft); }
   .foot {
     margin-top: 40px;
@@ -101,6 +58,4 @@ import { works, totalProgress } from '../../data/works';
   }
   @media (max-width: 760px) {
     .work { grid-template-columns: 1fr; }
-    .cover { aspect-ratio: 4 / 3; }
-  }
-</style>
+  </style>
