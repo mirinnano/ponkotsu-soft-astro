@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 const isPages = process.env.DEPLOY_TARGET === 'pages';
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://ponkotsu-soft.workers.dev',
+  site: process.env.SITE_URL ?? 'https://ponkotsu-soft.ponkotu.workers.dev',
   base: process.env.BASE_PATH ?? '/',
   // 画像はビルド時に最適化（実行時の画像変換は使わない）
   adapter: isPages ? undefined : cloudflare({ imageService: 'compile' }),

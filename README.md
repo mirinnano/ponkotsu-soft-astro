@@ -2,6 +2,9 @@
 
 Astro 製の公式サイト。本番は Cloudflare Workers（`@astrojs/cloudflare`）、配布ファイルは Cloudflare R2。
 
+- 本番: https://ponkotsu-soft.ponkotu.workers.dev
+- プレビュー（GitHub Pages・フォームなし）: https://mirinnano.github.io/ponkotsu-soft-astro/
+
 ```bash
 npm install
 npm run dev      # http://localhost:4321
@@ -42,7 +45,9 @@ PONKOTSU software。白と黒のみ。「ぽんこつ（ちょっと壊れてい
 
 ```bash
 npx wrangler login
+# ダッシュボードで R2 を有効化してから
 npx wrangler r2 bucket create ponkotsu-downloads
+# wrangler.jsonc の r2_buckets のコメントを外す
 npx wrangler r2 object put ponkotsu-downloads/umikaze/<ファイル名> --file <ローカルのファイル> --remote
 npx wrangler secret put BETA_ACCESS_CODES
 npx wrangler secret put DOWNLOAD_SIGNING_SECRET
