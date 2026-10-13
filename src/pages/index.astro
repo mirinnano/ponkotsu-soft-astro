@@ -34,10 +34,7 @@ const latestNews = (await getNews()).slice(0, 3);
     <div class="hero-center">
       <h1 class="hero-badge"><Logo kind="badge-line" tone="black" loading="eager" /></h1>
     </div>
-    <p class="hero-catch">
-      <span class="jp">語りえぬ幸福を、あの夏に置いてきた。</span>
-      <span class="en">Whereof one cannot speak, thereof we write.</span>
-    </p>
+    <p class="hero-catch">うまく言えないけど、たぶん、しあわせだった。</p>
   </section>
 
   <section id="intro" class="container intro reveal">
@@ -192,29 +189,16 @@ const latestNews = (await getNews()).slice(0, 3);
     width: clamp(260px, 30vw, 440px);
     height: auto;
   }
-  /* キャッチコピーは右下の隅に。ウィトゲンシュタイン『論理哲学論考』の結びを、書く側から言い換えた一行を添える */
+  /* キャッチコピーは右下の隅に、小さく */
   .hero-catch {
     position: absolute;
     right: var(--gutter);
     bottom: clamp(28px, 6vh, 56px);
-    display: grid;
-    justify-items: end;
-    gap: 6px;
-    text-align: right;
+    font-family: var(--serif-jp);
+    font-size: clamp(13px, 1.1vw, 15px);
+    letter-spacing: 0.16em;
     color: var(--ink);
     animation: rise 2s var(--ease) both 1.4s;
-  }
-  .hero-catch .jp {
-    font-family: var(--serif-jp);
-    font-size: clamp(14px, 1.2vw, 16px);
-    letter-spacing: 0.2em;
-  }
-  .hero-catch .en {
-    font-family: var(--serif-en);
-    font-style: italic;
-    font-size: 14px;
-    letter-spacing: 0.06em;
-    color: var(--ink-soft);
   }
   @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
@@ -328,7 +312,6 @@ const latestNews = (await getNews()).slice(0, 3);
     .hero-badge :global(img) { width: 76vw; }
     /* スマホでは人物の顔にかからないよう、空の位置へ */
     .hero-center { justify-content: flex-start; padding-top: 14svh; }
-    .hero-catch .jp { font-size: 13px; letter-spacing: 0.14em; }
-    .hero-catch .en { font-size: 12px; }
+    .hero-catch { font-size: 12.5px; letter-spacing: 0.1em; }
   }
 </style>
