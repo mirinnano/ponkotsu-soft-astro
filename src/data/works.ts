@@ -31,6 +31,7 @@ export type Work = {
   release?: string; // 発売・頒布の予定（例：2027年 夏）
   setting: string;
   betaOpen: boolean;
+  demoOpen?: boolean; // 体験版をコードなしで配る（/api/demo）
 };
 
 export const works: Work[] = [
@@ -81,6 +82,7 @@ export const works: Work[] = [
       },
     ],
     betaOpen: true,
+    demoOpen: true,
   },
 ];
 

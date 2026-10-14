@@ -33,7 +33,7 @@
             item.append(a, size);
             list.append(item);
           }
-          status.append(`認証しました（${body.version}）。リンクは 10 分間有効です。`, list);
+          status.append(`${body.version} のファイルです。リンクは 10 分間有効です。`, list);
         } else if (body.url) {
           status.innerHTML = '';
           const a = Object.assign(document.createElement('a'), {

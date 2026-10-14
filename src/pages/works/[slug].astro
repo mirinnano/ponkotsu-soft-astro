@@ -135,6 +135,25 @@ const share = [
     </section>
   )}
 
+  {work.demoOpen && (
+    <section id="demo" class="download">
+      <div class="container narrow section reveal">
+        <h2>体験版</h2>
+        <p class="note">DAY 0 から DAY 4 までを無料で読めます。セーブデータは製品版と別に保存されます。</p>
+        {!formsEnabled ? (
+          <p class="notice">体験版の配布は準備中です。</p>
+        ) : (
+        <form action={u('/api/demo')} method="post" class="beta-form" data-ajax-form>
+          <div class="field">
+            <button type="submit">ダウンロードリンクを表示する</button>
+          </div>
+          <p class="status-msg" data-status aria-live="polite" />
+        </form>
+        )}
+      </div>
+    </section>
+  )}
+
   {
     work.betaOpen && (
       <section id="download" class="download">
