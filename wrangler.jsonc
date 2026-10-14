@@ -6,7 +6,7 @@
   "compatibility_flags": ["nodejs_compat"],
   // main と assets は @astrojs/cloudflare がビルド時に設定する
   "observability": { "enabled": true }
-  // ベータ版などの配布ファイル置き場（R2 は転送量が無料）。
+  // 製品版の配布ファイル置き場（R2 は転送量が無料）。aria-engine-rust の CI がここへ置く。
   // ダッシュボードで R2 を有効化し、バケットを作ってから下の行のコメントを外す
   // "r2_buckets": [{ "binding": "DOWNLOADS", "bucket_name": "ponkotsu-downloads" }]
 }

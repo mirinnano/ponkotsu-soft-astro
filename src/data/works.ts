@@ -1,7 +1,13 @@
 export type Character = { name: string; role: string; line?: string; description: string };
 import type { ImageMetadata } from 'astro';
+import hesphorosTitle from '../assets/works/hesphoros/screen-title.png';
+import hesphorosDayCard from '../assets/works/hesphoros/screen-day1-card.png';
+import hesphorosPlatform from '../assets/works/hesphoros/screen-day1-platform.png';
+import hesphorosTrain from '../assets/works/hesphoros/screen-day1-train.png';
 
 export type Spec = { term: string; desc: string };
+// ゲーム画面。体験版（DAY 0–4）の範囲から選び、先の展開は載せない
+export type Screenshot = { src: ImageMetadata; alt: string; caption?: string };
 // 販売・配布ページ（BOOTH、DLsite、Steam のウィッシュリストなど）
 export type StoreLink = { label: string; href: string };
 export type Work = {
@@ -20,6 +26,7 @@ export type Work = {
   keyVisual?: ImageMetadata; // キービジュアル（src/assets に置いて import）
   keyVisualAlt?: string;
   trailer?: string; // PV の YouTube 動画 ID
+  screenshots?: Screenshot[];
   stores?: StoreLink[];
   release?: string; // 発売・頒布の予定（例：2027年 夏）
   setting: string;
@@ -46,6 +53,12 @@ export const works: Work[] = [
       '発車ベルが鳴った。',
     ],
     progress: [{ label: 'シナリオ・スクリプト', value: 25 }],
+    screenshots: [
+      { src: hesphorosTitle, alt: 'タイトル画面。夜の街の写真に、引用の断片が散らばっている', caption: 'タイトル' },
+      { src: hesphorosDayCard, alt: '海沿いのホームの写真に「DAY 1　西へ　9月21日・横浜駅」と出ている', caption: '日付カード' },
+      { src: hesphorosPlatform, alt: '海沿いのホーム。字幕に「発車ベルが鳴る。」', caption: 'DAY 1' },
+      { src: hesphorosTrain, alt: '電車の窓から見える夕方の街。字幕に「それ以上は聞けなかった。」', caption: 'DAY 1' },
+    ],
     specs: [
       { term: '形式', desc: 'キネティックノベル（選択肢なし）' },
       { term: '舞台', desc: '2001年の秋。横浜から、鈍行で山陰の海まで' },
