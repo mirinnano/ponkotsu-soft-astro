@@ -4,7 +4,8 @@
 BETA_ACCESS_CODES=
 # ダウンロード URL の署名鍵（`openssl rand -base64 32` などで作る）
 DOWNLOAD_SIGNING_SECRET=
-# R2 に置いた配布ファイルのキー（例: hesphoros/hesphoros-beta-0.1.zip）
+# 予備：R2 に hesphoros/latest.json がまだないときに渡す 1 ファイルのキー
+# （ふだんは aria-engine-rust の CI が latest.json と各 OS のインストーラーを置くので空でよい）
 BETA_FILE_KEY=
 
 # お問い合わせの転送先（Discord / Slack の Incoming Webhook URL）

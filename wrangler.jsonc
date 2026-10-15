@@ -5,8 +5,17 @@
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   // main と assets は @astrojs/cloudflare がビルド時に設定する
-  "observability": { "enabled": true }
-  // ベータ版などの配布ファイル置き場（R2 は転送量が無料）。
-  // ダッシュボードで R2 を有効化し、バケットを作ってから下の行のコメントを外す
-  // "r2_buckets": [{ "binding": "DOWNLOADS", "bucket_name": "ponkotsu-downloads" }]
+  "observability": { "enabled": true },
+  // 配布ファイル置き場（R2・APAC・Standard）。aria-engine-rust の CI が製品版と体験版を置く。
+  // バケットは公開 URL なし。読めるのは署名付きリンクを確かめた /api/download だけ
+  "r2_buckets": [{ "binding": "DOWNLOADS", "bucket_name": "ponkotsu-downloads" }],
+  // IP ごとの回数制限（Workers Rate Limiting・追加料金なし）。period は 10 か 60 秒だけ選べる
+  "ratelimits": [
+    // アクセスコードの試行：1 分に 5 回まで
+    { "name": "CODE_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } },
+    // 体験版のリンク発行：1 分に 3 回まで
+    { "name": "LINK_LIMITER", "namespace_id": "1002", "simple": { "limit": 3, "period": 60 } },
+    // ファイルの取得：1 分に 20 回まで（中断からの再開を何度かできる程度）
+    { "name": "FETCH_LIMITER", "namespace_id": "1003", "simple": { "limit": 20, "period": 60 } }
+  ]
 }

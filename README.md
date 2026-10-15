@@ -48,7 +48,40 @@ PONKOTSU software。白と黒のみ。「ぽんこつ（ちょっと壊れてい
 ## 本番（Cloudflare）
 
 構成：ページは静的に書き出し、`/api/*`（ベータ認証・ダウンロード・お問い合わせ）だけを Worker で動かす。
-ベータ版のファイルは R2 に置き、アクセスコードが合った人にだけ 10 分間有効な署名付き URL を渡す。
+製品版のファイルは R2 に置き、アクセスコードが合った人にだけ 10 分間有効な署名付き URL を渡す。
+
+### 製品版の配布の流れ
+
+1. aria-engine-rust の `main` に push すると、CI（`umikaze-release.yml`）が Windows・macOS・Linux 版を作り、
+   R2 の `hesphoros/builds/<版>/<OS>/` にインストーラーを置く。最後に `hesphoros/latest.json`（版・OS ごとのファイル名・大きさ・SHA-256）を書き換える。
+   古い main のビルドは新しい 5 つを残して消す。タグ（`umikaze-v*`）のビルドは消さない。
+2. 作品ページでアクセスコードを入れると、`/api/beta` が `latest.json` を読み、OS ごとのダウンロードリンクを返す。
+3. リンクは `/api/download` を通って R2 から直接流れる。期限が切れたら、もう一度コードを入れる。
+
+体験版（DAY 0–4）のインストーラーも同じバケットの `hesphoros-demo/` に置き、作品ページからコードなしで配る（`/api/demo`）。
+リポジトリが公開なので、どちらも GitHub の Release や Actions の成果物には置かない。ブラウザ版の体験版は GitHub Pages。
+
+### 課金を防ぐための設定
+
+R2 は転送量が無料で、保存 10 GB・書き込み 100 万回・読み出し 1,000 万回までが毎月の無料枠。それを超えないように：
+
+- バケット `ponkotsu-downloads`（APAC・Standard）は公開 URL なし。読めるのは署名を確かめた `/api/download` だけ。
+  読み出しのたびに料金がかかる Infrequent Access は使わない
+- IP ごとの回数制限（`wrangler.jsonc` の `ratelimits`、追加料金なし）：アクセスコードの試行は 1 分に 5 回、
+  体験版のリンク発行は 1 分に 3 回、ファイルの取得は 1 分に 20 回まで。コードが合うまで R2 は読まない
+- 保存量：CI が main のビルドを新しい 5 つだけ残す。バケットのライフサイクルルールで、main のビルドは 180 日、
+  途中で止まったアップロードは 1 日で消える
+- 念のため、Cloudflare ダッシュボードの「Billing → Billable Usage」で通知を設定しておく
+
+aria-engine-rust 側に登録するもの（Settings → Secrets and variables → Actions）：
+
+| 種類 | 名前 | 中身 |
+| --- | --- | --- |
+| Secret | `R2_ACCOUNT_ID` | Cloudflare のアカウント ID |
+| Secret | `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` | R2 の API トークン（対象バケットへの読み書き権限）で発行した S3 互換キー |
+| Variable（任意） | `R2_BUCKET` | バケット名。未設定なら `ponkotsu-downloads` |
+
+Secrets が未登録のあいだも、ビルドとテストは動く（配布だけ行わない）。
 
 初回だけ行う作業：
 

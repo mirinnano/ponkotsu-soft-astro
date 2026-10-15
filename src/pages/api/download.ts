@@ -2,11 +2,19 @@ import type { APIRoute } from 'astro';
 import { env } from 'cloudflare:workers';
 import { DOWNLOAD_SIGNING_SECRET } from 'astro:env/server';
 import { verify } from '../../lib/signing';
+import { allowed } from '../../lib/limits';
 
 export const prerender = false;
 
 // 署名付き URL を確かめて、R2 からファイルを流す。Range に対応しているので中断しても再開できる
 export const GET: APIRoute = async ({ url, request }) => {
+  // 署名付きリンクでも、同じ IP からの取得は 1 分あたりの回数を絞る（中断からの再開は通る程度）
+  if (!(await allowed('FETCH_LIMITER', request, 'fetch'))) {
+    return new Response('ダウンロードが続いています。1 分ほど待ってから、もう一度お試しください。', {
+      status: 429,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Retry-After': '60' },
+    });
+  }
   const key = url.searchParams.get('k') ?? '';
   const exp = Number(url.searchParams.get('e'));
   const sig = url.searchParams.get('s') ?? '';
