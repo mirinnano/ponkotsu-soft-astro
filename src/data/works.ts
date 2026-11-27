@@ -45,6 +45,7 @@ export type Work = {
   setting: string;
   betaOpen: boolean;
   demoOpen?: boolean; // 体験版をコードなしで配る（/api/demo）
+  playUrl?: string; // ブラウザで読める体験版（public/ に置いた Web 版）
 };
 
 export const works: Work[] = [
@@ -110,6 +111,7 @@ export const works: Work[] = [
     ],
     betaOpen: true,
     demoOpen: true,
+    playUrl: '/play/hesphoros/',
   },
 ];
 

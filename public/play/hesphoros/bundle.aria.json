@@ -1,0 +1,106 @@
+{
+  "schema_version": 7,
+  "engine_version": "0.1.0",
+  "language_major": 1,
+  "language_minor": 0,
+  "vm_abi_version": 5,
+  "game_id": "jp.example.umikaze",
+  "game_version": "0.9.0-beta.1",
+  "game_title": "HesPhoros",
+  "logical_width": 1280,
+  "logical_height": 720,
+  "save_namespace": "umikaze-demo-v2",
+  "legacy_save_namespaces": [],
+  "font_assets": [
+    "assets/fonts/NotoSansJP-Regular.ttf",
+    "assets/fonts/MPLUS1Code-wght.ttf",
+    "assets/fonts/ShipporiMincho-Regular.ttf"
+  ],
+  "plugins": {
+    "trusted_keys": {
+      "publisher": "b502036cedb942acc6b34f1ea63fd38ff366bf8039943dc788d9cebe6eae2901"
+    },
+    "require": {
+      "jp.umikaze.story": "^1"
+    }
+  },
+  "ariac_blake3": "ab5bd6b5f70cfe0ab4d4154f6eb164fecf9eea4a5cbc9f9246e27bf5b4846666",
+  "ariac_size": 357622,
+  "pak_blake3": "0834d21fd6d8979fd38fd98a0bbeaf7de33027cb8b5993ca443eba5bfbceb851",
+  "pak_size": 552388,
+  "pak_content_root_blake3": "c3e1fe0df64f70978037c3548cd3832c017c6d2c1462773d1bd84382ab08a880",
+  "pak_profile": "signed",
+  "pack_id": "jp.example.umikaze.boot",
+  "pak_packs": [
+    {
+      "pack_id": "jp.example.umikaze.boot",
+      "role": "boot",
+      "file": "game.ariapak",
+      "blake3": "0834d21fd6d8979fd38fd98a0bbeaf7de33027cb8b5993ca443eba5bfbceb851",
+      "size": 552388,
+      "content_root_blake3": "c3e1fe0df64f70978037c3548cd3832c017c6d2c1462773d1bd84382ab08a880",
+      "assets": [
+        "assets/cg/city-sea.webp",
+        "assets/cg/laundromat-mic.webp",
+        "assets/cg/rain-room.webp",
+        "assets/cg/shinji-dusk.webp",
+        "assets/cg/ward-window.webp",
+        "assets/cg/westbound-window.webp"
+      ]
+    },
+    {
+      "pack_id": "jp.example.umikaze.hot",
+      "role": "hot",
+      "file": "game.hot.ariapak",
+      "blake3": "a4785f76ab4814ec709ceb69e0b22370eb94053ae953a377fdb4c69da849f3b9",
+      "size": 18217686,
+      "content_root_blake3": "a195e140988e0ee847540ef2b6dd89b4d0a8753ee2f401d8f57e065057a81d7a",
+      "assets": [
+        "assets/fonts/NotoSansJP-Regular.ttf",
+        "assets/fonts/ShipporiMincho-Regular.ttf"
+      ]
+    },
+    {
+      "pack_id": "jp.example.umikaze.cold",
+      "role": "cold",
+      "file": "game.cold.ariapak",
+      "blake3": "c9181b33f688a7ef23239fbc36c02a21418fa23b63447c72acce9f97ca5adcd6",
+      "size": 12894370,
+      "content_root_blake3": "dc7dc3d306f6fd8bf5160821d0167ea5810081eb2731c238a5d951622ac61084",
+      "assets": [
+        "assets/audio/ambient/rain.ogg",
+        "assets/audio/ambient/train-cabin.ogg",
+        "assets/audio/ambient/waves.ogg",
+        "assets/audio/ambient/wind.ogg",
+        "assets/audio/bgm/umk.errand.steps.ogg",
+        "assets/audio/bgm/umk.rail.departure.ogg",
+        "assets/audio/bgm/umk.recording.trace.ogg",
+        "assets/audio/bgm/umk.ward.first-light.ogg",
+        "assets/audio/bgm/umk.words.settle.ogg",
+        "assets/bg/scenes/hospital-corridor-overcast-v1.webp",
+        "assets/bg/scenes/hotel-corridor-blue-v1.webp",
+        "assets/bg/scenes/neon-alley-v1.webp",
+        "assets/bg/scenes/night-road-dark.webp",
+        "assets/bg/scenes/night-window-motion-v1.webp",
+        "assets/bg/scenes/okayama-rail-window-v1.webp",
+        "assets/bg/scenes/platform-sea-dawn-v1.webp",
+        "assets/bg/scenes/platform-sign-dawn.webp",
+        "assets/bg/scenes/rail-window-sunset-v1.webp",
+        "assets/bg/scenes/rain-street-evening-v1.webp",
+        "assets/bg/scenes/rain-window-dusk-v1.webp",
+        "assets/bg/scenes/sannomiya-rain-platform-v1.webp",
+        "assets/bg/scenes/shopping-street-dawn.webp",
+        "assets/bg/scenes/shore-seawall-overcast.webp",
+        "assets/bg/scenes/shore-storm-sunset-v1.webp",
+        "assets/bg/scenes/town-overcast-dusk.webp",
+        "assets/bg/scenes/train-rain-grey-v1.webp",
+        "assets/bg/scenes/train-window-fields.webp",
+        "assets/bg/scenes/train-window-noon.webp",
+        "assets/bg/scenes/wet-boulevard-night.webp",
+        "assets/fonts/MPLUS1Code-wght.ttf"
+      ]
+    }
+  ],
+  "content_root_blake3": "275f61da1fdbe6308d41409742af8d08ec3558cbe8b23f1c2a79e22b45c33cd0",
+  "integrity": "BLAKE3 chunk hashes plus Ed25519 publisher signature"
+}

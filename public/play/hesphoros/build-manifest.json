@@ -1,0 +1,8 @@
+{
+  "schema_version": 5,
+  "engine_version": "0.1.0",
+  "target": "web",
+  "bundle_blake3": "0a93ff87b8c303c47dd2284c8695078cc5b0f770b670ec1f057d4dd8554ec432",
+  "player_binary_included": false,
+  "web_runtime_package_required": false
+}

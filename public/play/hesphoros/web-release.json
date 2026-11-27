@@ -1,0 +1,25 @@
+{
+  "cache_policy": {
+    "entrypoint": "no-cache",
+    "immutable": "public, max-age=31536000, immutable"
+  },
+  "entrypoints": [
+    "index.html",
+    "manifest.webmanifest",
+    "service-worker.js"
+  ],
+  "game_id": "jp.example.umikaze",
+  "game_version": "0.9.0-beta.1",
+  "immutable_files": [
+    "game.ariapak",
+    "game.cold.ariapak",
+    "game.hot.ariapak",
+    "pkg/aria_web.js",
+    "pkg/aria_web_bg.wasm",
+    "save-store.js",
+    "web-audio.js",
+    "web-renderer.js"
+  ],
+  "mode": "static-pwa",
+  "schema_version": 1
+}
