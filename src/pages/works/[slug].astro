@@ -81,7 +81,7 @@ const openDays = work.days?.length ?? 0;
           {work.summary && <p class="lead">{work.summary}</p>}
           <p class="meta"><span>{work.status}</span><span>{work.genre}</span><span>{work.reading}</span></p>
           <div class="actions">
-            {work.demoOpen && <a class="button" href="#get">体験版を読む</a>}
+            {work.playUrl ? <a class="button" href={u(work.playUrl)}>体験版を読む</a> : work.demoOpen && <a class="button" href="#get">体験版を読む</a>}
             <ul class="jump">
               <li><a href="#story">あらすじ</a></li>
               {work.days?.length && <li><a href="#days">旅程</a></li>}
@@ -208,6 +208,12 @@ const openDays = work.days?.length ?? 0;
         </div>
         <div class="menu reveal" data-ui style="transition-delay: 160ms">
           <p class="menu-title"><WorkLogo slug={work.slug} title={work.title} tone="white" /></p>
+          {work.playUrl && (
+            <div class="menu-play">
+              <a class="button button-dark" href={u(work.playUrl)}>ブラウザで読む</a>
+              <p class="menu-note">インストールせずに、パソコンでもスマートフォンでも読めます。</p>
+            </div>
+          )}
           {work.demoOpen && work.betaOpen && (
             <div class="segmented" role="radiogroup" aria-label="入手のしかた">
               <label><input type="radio" name="get-mode" value="demo" checked data-mode /><span>体験版</span></label>
@@ -558,6 +564,7 @@ const openDays = work.days?.length ?? 0;
   .segmented span { display: grid; place-items: center; min-height: 44px; font-size: var(--s-small); letter-spacing: 0.06em; transition: background-color 0.25s var(--ease), color 0.25s var(--ease); }
   .segmented input:checked + span { background: var(--w-light); color: var(--w-light-ink); }
   .segmented input:focus-visible + span { outline: 1px solid var(--w-accent); outline-offset: 2px; }
+  .menu-play { display: grid; gap: 10px; margin-bottom: 28px; }
   .menu-form { display: grid; gap: 14px; }
   .menu-form[hidden] { display: none; }
   .menu-note { margin: 0; color: var(--w-soft); font-size: var(--s-small); line-height: 1.7; }
